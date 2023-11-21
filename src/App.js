@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+// import { signInWithPopup } from "firebase/auth";
+import { Auth } from "./auth";
+import "./App.css"
+import Posts from "./posts";
 function App() {
+  const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div style={{backgroundColor: logged? "white" : "#164C45" }} id="app-container">
+        {!logged?
+        <>
+          <div id="left-side">
+            <div id="logo-text">
+              <div>
+                <h1 id="sugo-text">SUGO</h1>
+                <h2 id="description">Cebu City's first request based online platform for Technical-Vocational activities.</h2>
+              </div>
+            </div>
+            <div></div>
+          </div>
+          <div id="login-container-app">
+            <div></div>
+            <div id="rightside-middle">
+              <Auth logInfo={setLogged}/>
+            </div>
+            <div></div>
+          </div>
+        </>:
+        <>
+          <div id="dashboard">
+            <Posts logInfo={setLogged} />
+          </div>
+        </>}
+      </div>
+    </>
   );
 }
+
 
 export default App;

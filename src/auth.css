@@ -1,0 +1,88 @@
+#login-container-auth{
+    background-color: #F5F7F8;
+    box-shadow: 5px 5px 5px  ; 
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 3rem;
+    border-radius: 20px;
+    margin-left: 20%;
+}
+
+#login{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+
+input{
+    padding: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
+#login-btn{
+    font-size: 20px;
+    padding: 1rem;
+    cursor: pointer;
+    background-color: #CC8D1A;
+    border: none;
+    border-radius: 10px;
+    color: white;
+}
+
+#forgotpassword-btn{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: black;
+    width: fit-content;
+    align-self: center;
+}
+
+#register-btn{
+    font-size: 15px;
+    padding: 1rem;
+    cursor: pointer;
+    background-color: #164C45;
+    border: none;
+    border-radius: 10px;
+    width: fit-content;
+    align-self: center;
+    color: white;
+}
+
+#register-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#Register{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#loginFacebook, #loginGmail{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 15px;
+    font-size: 10px;
+}
+#facebook-logo, #google-logo{
+    height: 20px;
+}
+
+#alert{
+    display: flex;
+    height: fit-content;
+    padding: 1px;
+    margin: 0px;
+}
+
