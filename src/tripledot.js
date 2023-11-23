@@ -42,6 +42,13 @@ export default function TripleDotOption(props) {
       console.log(err)
     })
   }
+
+  const editComment = () =>{
+    props.setEditingComment(false)
+  }
+  const editPost = ()=>{
+    props.setEditingPost(true)
+  }
   return (
     <div>
       <IconButton onClick={handleClick} aria-label="delete">
@@ -65,7 +72,7 @@ export default function TripleDotOption(props) {
         <LoadingButton
           size="small"
           color='error'
-          onClick={props.action === "deletePost"?deletePost:deleteComment}
+          onClick={props.action === "Post"?deletePost:deleteComment}
           endIcon={<DeleteOutlineIcon/>}
           loading={loading}
           loadingPosition="end"
@@ -76,7 +83,7 @@ export default function TripleDotOption(props) {
         </LoadingButton>
         <LoadingButton
           size="small"
-          onClick={props.action === "deletePost"?deletePost:deleteComment}
+          onClick={props.action === "Comment"?editComment:editPost}
           endIcon={<EditIcon/>}
           // loading={editLoading}
           loadingPosition="end"

@@ -21,14 +21,15 @@ export default function LeftNavigation(props) {
     setShowTransactionHistory(!showTransactionHistory);
   };
 
-  function getActiveListing(){  
+  const getActiveListing= React.useCallback(()=>{  
     const activeListing = props.posts.filter((post)=>post.userID === auth?.currentUser?.uid);
     setActiveListing(activeListing)
-  }
+  },[props.posts])
 
   useEffect(()=>{
     getActiveListing()
-  },)
+  },[getActiveListing])
+
   const handleActiveListingsClick = () => {
     setShowActiveListings(!showActiveListings);
     console.log(activeListing)

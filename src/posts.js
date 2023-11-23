@@ -20,6 +20,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountMenu from "./ProfileLogoDropdown";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import Comment from "./Comments";
 
 
 
@@ -114,8 +115,8 @@ export default function Posts(props){
                     <div></div>
                     <div></div>
                     <div id="posts-navigation-bar-right">
-                        <IconButton sx={{backgroundColor:'#CC8D1A', '&:hover':{backgroundColor:'#FAD02C'},color:'white'}} size="large" ><EmailOutlinedIcon size="large" /></IconButton>
-                        <IconButton sx={{backgroundColor:'#CC8D1A', '&:hover':{backgroundColor:'#FAD02C'},color:'white'}} size="large" ><NotificationsNoneIcon size="large" /></IconButton>
+                        <IconButton sx={{backgroundColor:'#CC8D1A', '&:hover':{backgroundColor:'#8d6211'},color:'white'}} size="large" ><EmailOutlinedIcon size="large" /></IconButton>
+                        <IconButton sx={{backgroundColor:'#CC8D1A', '&:hover':{backgroundColor:'#8d6211'},color:'white'}} size="large" ><NotificationsNoneIcon size="large" /></IconButton>
                         <AccountMenu logInfo={props.logInfo} />
                     </div>
                 </div>
@@ -234,7 +235,7 @@ export default function Posts(props){
                                 </FormControl>
                                 <div id="amount-div"><span>Php</span><input onChange={(e)=>setAmount(e.target.value)} id="bid-amount" type="number" step="10" min="0" value={amount}/></div>
                             </div>
-                            <Button onClick={postRequest} variant="contained" sx={{backgroundColor:'#CC8D1A',width:'100%', marginTop:'5px','&:hover':{backgroundColor:'#FAD02C'}}}>{posting?<CircularProgress size={25}/>:<>Post</>}</Button>
+                            <Button onClick={postRequest} variant="contained" sx={{backgroundColor:'#CC8D1A',width:'100%', marginTop:'5px','&:hover':{backgroundColor:'#8d6211'}}}>{posting?<CircularProgress size={25}/>:<>Post</>}</Button>
                         </div>
                     </div>
                 </div>
@@ -289,10 +290,9 @@ const AccordionStyled = styled((props) => (
 function Post(props){
     
     const [expanded, setExpanded] = React.useState(false);
-    const [editing,setEditing] = useState(false);
+    const [editingPost,setEditingPost] = useState(false);
     const [requestDescription, setRequestDescription] = useState("")
     const [loading,setLoading] = useState(false)
-    // const [refreshComment,setRefreshComment] = useState(false)
     const handleChange = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     }
@@ -323,7 +323,7 @@ function Post(props){
             await updateDoc(doc(db,"Posts",post.id),{
                 description:requestDescription,
             }).then(()=>{
-                setEditing(false)
+                setEditingPost(false)
                 setLoading(false)
                 setReload(!reload)
             })
@@ -334,6 +334,7 @@ function Post(props){
             setLoading(false)
         }
     }
+    
     
     return(
         <>
@@ -364,30 +365,30 @@ function Post(props){
                                 <PhpIcon  fontSize="large"/>
                                 </Typography>
                             }
-                            {props.userID !== auth.currentUser.uid?<Button sx={{alignSelf:'flex-end',backgroundColor:'#CC8D1A','&:hover':{backgroundColor:'#FAD02C'}}} variant="contained" >Bid</Button>:<></>}
+                            {props.userID !== auth.currentUser.uid?<Button sx={{alignSelf:'flex-end',backgroundColor:'#CC8D1A','&:hover':{backgroundColor:'#8d6211'}}} variant="contained" >Bid</Button>:<></>}
                         </div>
                     </div>
                 </div>
                 </AccordionSummaryCustomized>
                 <AccordionDetailsStyled>
-                <div style={{border:'solid 0.5px silver',padding:'10px', backgroundColor:'white',marginTop:'5px'}}>
+                <div style={{padding:'10px', backgroundColor:'white',marginTop:'5px'}}>
                     <div id="user-info-inputbox">
                         <div style={{display:'flex', alignItems:'center',gap:'10px'}}>
-                            {props?.post?.userPhoto?<img alt="userphoto" id="userPhoto" src={props?.post?.userPhoto}/>:<BackgroundLetterAvatars size={60} name={props?.post?.displayName?props.post.displayName:"Anonymous"} />}
+                            {props.post.photoURL?<img alt="userphoto" id="userPhoto" src={props.post.photoURL}/>:<BackgroundLetterAvatars size={60} name={props.post.displayName?props.post.displayName:"Anonymous"} />}
                             <div id="props-posts-info">
                                 <h3 style={{}}>{props.post.displayName}</h3>
                                 <p style={{fontSize:'12px',marginTop:'-8px'}}>Posted on: {props.date}</p>
                             </div>
                         </div>
-                        <div>{auth.currentUser.uid === props.post.userID?<TripleDotOption action="deletePost" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditing={setEditing} />:<></>}</div>
+                        <div>{auth.currentUser.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<></>}</div>
                     </div>
                     <hr style={{color:'#CC8D1A'}}></hr>
                     <div style={{width:'100%'}} >
-                    {editing?
+                    {editingPost?
                     <div style={{width:'100%',display:'flex',flexDirection:'column'}}>
                         <TextField onChange={(e)=>setRequestDescription(e.target.value)} sx={{marginLeft:'70px',width:'88.5%', fontSize:'10px'}} defaultValue={props.post.description} label="Description" variant="filled" />
                         <div style={{alignSelf:'flex-end',display:'flex',gap:'5px',marginTop:'5px'}}>
-                            <Button onClick={()=>setEditing(false)} color="error" variant="outlined" size="small">Cancel</Button>
+                            <Button onClick={()=>setEditingPost(false)} color="error" variant="outlined" size="small">Cancel</Button>
                             <Button onClick={()=>editPost(props.post,requestDescription,props.reload,props.setReload)} color="success" variant="outlined">{loading?<CircularProgress size={25}/>:<>Save</>}</Button>
                         </div>
                         
@@ -412,23 +413,14 @@ function Post(props){
                         <TextField InputProps={{
                             endAdornment:auth?.currentUser?.photoURL?<img alt="userphoto" style={{height:'36px',borderRadius:'18px'}} id="userPhoto" src={auth?.currentUser?.photoURL}/>:<BackgroundLetterAvatars size={36} name={auth?.currentUser?.displayName?auth.currentUser.displayName:"Anonymous"} />
                         }} 
-                        sx={{width:'100%'}} value={comment} placeholder="Post a comment." multiline onChange={(e)=>setComment(e.target.value)} />
+                        sx={{width:'100%'}} placeholder="Post a comment." multiline onChange={(e)=>setComment(e.target.value)} value={comment} />
                         <div style={{display:'flex', width:'100%',justifyContent:'flex-end'}}>
-                            <LoadingButton size="small" loading={loading} onClick={()=>{postComment(props.post)}} sx={{marginTop:'3px'}} variant="contained"><SendIcon fontSize="small" /></LoadingButton>
+                            <LoadingButton size="small" loading={loading} onClick={()=>{postComment(props.post)}} sx={{marginTop:'3px',backgroundColor:"#CC8D1A"}} variant="contained"><SendIcon fontSize="small" /></LoadingButton>
                         </div>
                         {props.comment
                             .filter((usercomment) => usercomment.postID === props.post.id)
                             .map((filteredComment, index) => (
-                                <div id="comments" key={index}>
-                                    {filteredComment.photoURL?<img alt="userphoto" style={{height:'36px',borderRadius:'18px'}} src={filteredComment.photoURL} />:<BackgroundLetterAvatars size={36} name={filteredComment.displayName} />}
-                                    <div id="comments-info">
-                                        <div style={{display:'flex',justifyContent:'space-between',width:'100%'}}>
-                                            <strong>{filteredComment.displayName}:</strong>
-                                            <div>{auth.currentUser.uid === filteredComment.userID?<TripleDotOption action="deleteComment" getComments={props.getComments} commentID={filteredComment.id} setEditing={setEditing} />:<></>}</div>
-                                        </div>
-                                        <TextField variant="filled" multiline sx={{width:'100%'}} InputProps={{readOnly:true,}} value={filteredComment.comment} />
-                                    </div>
-                                </div>
+                                <Comment key={index} filteredComment={filteredComment} getComments={props.getComments} />
                         ))}
                     </AccordionDetails>
                 </Accordion>
