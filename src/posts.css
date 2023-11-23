@@ -65,13 +65,13 @@
 }
 #feed-area-right{
     height: 90lvh;
-    width: 25%;
+    width: 22%;
     border-radius: 20px;
     position: sticky;
     top:0;
 }
 #feed-area-left{
-    width: 15%;
+    width: 22%;
     border-radius: 20px;
     height: 90lvh;
     position: sticky;
@@ -217,16 +217,11 @@
     justify-content: space-between;
 }
 
-#comments{
-    display: flex;
-    gap: 5px;
-    /* align-items:; */
-    margin-top: 5px;
-}
+
 #comments-info{
     display: flex;
     width: 100%;
-    flex-direction: column;
+    fl  ex-direction: column;
 }
 
 
