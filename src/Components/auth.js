@@ -23,6 +23,8 @@ export const Auth = (props) =>{
                 setMessage("")
                 setLoading(false)
                 localStorage.setItem('logStatus',true);
+                localStorage.setItem('photoURL',response.user.photoURL)
+                localStorage.setItem('displayName',response.user.displayName)
             }).catch((error)=>{
                 setMessage("Invalid email/password.")
                 setLoading(false)
@@ -55,6 +57,8 @@ export const Auth = (props) =>{
             props.logInfo(true)
             setLoading(false)
             localStorage.setItem('logStatus',true);
+            localStorage.setItem('photoURL',response.user.photoURL)
+            localStorage.setItem('displayName',response.user.displayName)
         }).catch((error)=>{
             console.log(error)
         })
@@ -67,6 +71,8 @@ export const Auth = (props) =>{
             console.log(response.user)
             props.logInfo(true)
             localStorage.setItem('logStatus',true);
+            localStorage.setItem('photoURL',response.user.photoURL)
+            localStorage.setItem('displayName',response.user.displayName)
         }).catch((err)=>{
             console.log(err.message)
         })

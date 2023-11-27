@@ -2,11 +2,12 @@ import { useState } from "react";
 // import { signInWithPopup } from "firebase/auth";
 import { Auth } from "./Components/auth";
 import "./App.css"
-import Posts from "./Components/posts";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./Pages/Dashboard";
 function App() {
   const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   return (
-    <>
+    <div id="app-container">
       <div style={{backgroundColor: logged? "white" : "#164C45" }} id="app-container">
         {!logged?
         <>
@@ -29,11 +30,20 @@ function App() {
         </>:
         <>
           <div id="dashboard">
-            <Posts logInfo={setLogged} />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Dashboard logInfo={setLogged} />} >
+                  <Route path="listings" element={<h1>listings</h1>} />
+                  <Route path="biddings" element={<h1>biddings</h1>} />
+                  <Route path="history" element={<h1>history</h1>} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+            {/* <Posts logInfo={setLogged} /> */}
           </div>
         </>}
       </div>
-    </>
+    </div>
   );
 }
 

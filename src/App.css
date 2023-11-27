@@ -4,7 +4,7 @@
   /* background-color:#16232E; */
   justify-content: space-between;
   height: 100lvh;
-  width: 98.5%;
+  width: 100%;
   /* padding: 10px; */
 }
 #left-side{
@@ -50,7 +50,7 @@
 }
 
 #dashboard{
-  /* border: solid 1px black; */
   width: 100%;
+  height: fit-content;
 }
 

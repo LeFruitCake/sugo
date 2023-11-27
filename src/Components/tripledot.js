@@ -7,7 +7,6 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
-
 export default function TripleDotOption(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
