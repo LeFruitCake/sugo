@@ -221,7 +221,7 @@
 #comments-info{
     display: flex;
     width: 100%;
-    fl  ex-direction: column;
+    flex-direction: column;
 }
 
 

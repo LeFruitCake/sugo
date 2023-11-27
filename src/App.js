@@ -1,8 +1,8 @@
 import { useState } from "react";
 // import { signInWithPopup } from "firebase/auth";
-import { Auth } from "./auth";
+import { Auth } from "./Components/auth";
 import "./App.css"
-import Posts from "./posts";
+import Posts from "./Components/posts";
 function App() {
   const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   return (

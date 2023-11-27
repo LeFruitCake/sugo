@@ -1,6 +1,6 @@
-import "./posts.css"
+import "../CSS/posts.css"
 import * as React from 'react';
-import { auth, db} from "./config/firebase";
+import { auth, db} from "../config/firebase";
 import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where } from "firebase/firestore";//updateDoc, deleteDoc 
 import { useEffect, useState } from "react";
 import BackgroundLetterAvatars from "./Avatar";

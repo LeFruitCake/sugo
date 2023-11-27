@@ -1,7 +1,7 @@
-import { auth, googleProvider, facebookProvider } from "./config/firebase";
+import { auth, googleProvider, facebookProvider } from "../config/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile} from "firebase/auth";
 import { useState } from "react";
-import "./auth.css"
+import "../CSS/auth.css"
 import { Button, CircularProgress, TextField } from "@mui/material";
 import PasswordField from "./passwordComponent";
 export const Auth = (props) =>{

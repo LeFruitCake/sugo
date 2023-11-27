@@ -11,7 +11,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { auth } from "./config/firebase";
+import { auth } from "../config/firebase";
 
 export default function LeftNavigation(props) {
   const [showTransactionHistory, setShowTransactionHistory] = React.useState(true);

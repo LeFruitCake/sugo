@@ -4,7 +4,7 @@ import { IconButton, Stack } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from './config/firebase';
+import { db } from '../config/firebase';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
