@@ -23,7 +23,8 @@ const Dashboard = (props) => {
             <div>
                 <div id="navigation-bar">
                     <div id="navigation-bar-left">
-                        {/* <input type="search"/> */}
+                        <h1>SUGO</h1>
+                        <h4>your hustle partner</h4>
                     </div>
                     <nav id="navigation-bar-middle">
                         <NavLink id='nav-btn' to="/"><HomeRoundedIcon fontSize="large" /><Typography variant="button" >Home</Typography></NavLink>

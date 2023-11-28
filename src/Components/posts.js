@@ -1,11 +1,17 @@
 import "../CSS/posts.css"
 import * as React from 'react';
+
+//Firebase
 import { auth, db} from "../config/firebase";
 import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where } from "firebase/firestore";//updateDoc, deleteDoc 
 import { useEffect, useState } from "react";
+
+//Component
 import BackgroundLetterAvatars from "./Avatar";
-import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, MenuItem, Select, FormControl, InputLabel} from "@mui/material";
 import TripleDotOption from "./tripledot";
+
+//MUI
+import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, MenuItem, Select, FormControl, InputLabel} from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FluorescentIcon from '@mui/icons-material/Fluorescent';
 import MuiAccordion from '@mui/material/Accordion';
@@ -74,6 +80,7 @@ export default function Posts(props){
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             label="Category"
+                            sx={{backgroundColor:'white'}}
                             value={filteredCategory}
                             onChange={ async (e)=>{
                                 setFetchingData(true)
@@ -265,7 +272,7 @@ function Post(props){
                                 <PhpIcon  fontSize="large"/>
                                 </Typography>
                             }
-                            {props.userID !== auth?.currentUser?.uid?<Button sx={{alignSelf:'flex-end',backgroundColor:'#CC8D1A','&:hover':{backgroundColor:'#8d6211'}}} variant="contained" >Bid</Button>:<></>}
+                            
                         </div>
                     </div>
                 </div>
@@ -280,7 +287,7 @@ function Post(props){
                                 <p style={{fontSize:'12px',marginTop:'-8px'}}>Posted on: {props.date}</p>
                             </div>
                         </div>
-                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<></>}</div>
+                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<Button sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
                     </div>
                     <hr style={{color:'#CC8D1A'}}></hr>
                     <div style={{width:'100%'}} >
