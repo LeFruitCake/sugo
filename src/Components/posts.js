@@ -9,9 +9,11 @@ import { useEffect, useState } from "react";
 //Component
 import BackgroundLetterAvatars from "./Avatar";
 import TripleDotOption from "./tripledot";
+import PostRequest from "./PostRequest";
+import Comment from "./Comments";
 
 //MUI
-import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, MenuItem, Select, FormControl, InputLabel} from "@mui/material";
+import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, MenuItem, Select, FormControl, InputLabel, Modal} from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FluorescentIcon from '@mui/icons-material/Fluorescent';
 import MuiAccordion from '@mui/material/Accordion';
@@ -21,7 +23,7 @@ import { Stack } from "@mui/system";
 import PhpIcon from '@mui/icons-material/Php';
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from '@mui/icons-material/Send';
-import Comment from "./Comments";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 
 
@@ -31,6 +33,7 @@ export default function Posts(props){
     const [reload,setReload] = useState(false);
     const [fetchingData,setFetchingData] = useState(false)
     const [filteredCategory, setFilteredCategory] = useState("All")
+    const [posting,setPosting] = useState(false)
     const fetchData = async ()=>{
         setFetchingData(true)
         try {
@@ -73,52 +76,60 @@ export default function Posts(props){
             <div id="app-container-posts">
                 <div id="feed-area">
                     <div id="feed-area-middle">
-                        <div id="filter-container">
-                        <FormControl sx={{width:'80%'}} size="small">
-                            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Category"
-                            sx={{backgroundColor:'white'}}
-                            value={filteredCategory}
-                            onChange={ async (e)=>{
-                                setFetchingData(true)
-                                setFilteredCategory(e.target.value)
-                                try {
-                                    if(e.target.value === "All"){
-                                        fetchData();
-                                    }else{
-                                        const data = await getDocs(
-                                            query(collection(db, "Posts"), orderBy("postDate", "desc"),where("category","==",e.target.value))
-                                        )
-                                        const filteredData = data.docs.map((doc) => ({
-                                            ...doc.data(),
-                                            id: doc.id,
-                                          }));
-                                        setPosts(filteredData)
-                                        setFetchingData(false)
-                                        console.log(posts)
+                        <div id="feed-area-post-btns">
+                            <div id="filter-container">
+                            <FormControl sx={{width:'80%'}} size="small">
+                                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Category"
+                                sx={{backgroundColor:'white'}}
+                                value={filteredCategory}
+                                onChange={ async (e)=>{
+                                    setFetchingData(true)
+                                    setFilteredCategory(e.target.value)
+                                    try {
+                                        if(e.target.value === "All"){
+                                            fetchData();
+                                        }else{
+                                            const data = await getDocs(
+                                                query(collection(db, "Posts"), orderBy("postDate", "desc"),where("category","==",e.target.value))
+                                            )
+                                            const filteredData = data.docs.map((doc) => ({
+                                                ...doc.data(),
+                                                id: doc.id,
+                                            }));
+                                            setPosts(filteredData)
+                                            setFetchingData(false)
+                                            console.log(posts)
+                                        }
+                                    } catch (err) {
+                                        console.error(err);
                                     }
-                                } catch (err) {
-                                    console.error(err);
-                                }
-                            }}
-                            >
-                                <MenuItem value={"All"}>All</MenuItem>
-                                <MenuItem value={"Automotive"}>Automotive</MenuItem>
-                                <MenuItem value={"Computer System Servicing"}>Computer System Servicing</MenuItem>
-                                <MenuItem value={"Cosmetology"}>Cosmetology</MenuItem>
-                                <MenuItem value={"Dress Making"}>Dress Making</MenuItem>
-                                <MenuItem value={"Electrical Systems"}>Electrical Systems</MenuItem>
-                                <MenuItem value={"Electronics"}>Electronics</MenuItem>
-                                <MenuItem value={"Food and Beverage Servicing"}>Food and Beverage Servicing</MenuItem>
-                                <MenuItem value={"Hair Dressing"}>Hair Dressing</MenuItem>
-                                <MenuItem value={"Plumbing"}>Plumbing</MenuItem>
-                                <MenuItem value={"Welding"}>Welding</MenuItem>
-                                <MenuItem value={"Woodworking"}>Woodworking</MenuItem>
-                            </Select>
-                        </FormControl>
+                                }}
+                                >
+                                    <MenuItem value={"All"}>All</MenuItem>
+                                    <MenuItem value={"Automotive"}>Automotive</MenuItem>
+                                    <MenuItem value={"Computer System Servicing"}>Computer System Servicing</MenuItem>
+                                    <MenuItem value={"Cosmetology"}>Cosmetology</MenuItem>
+                                    <MenuItem value={"Dress Making"}>Dress Making</MenuItem>
+                                    <MenuItem value={"Electrical Systems"}>Electrical Systems</MenuItem>
+                                    <MenuItem value={"Electronics"}>Electronics</MenuItem>
+                                    <MenuItem value={"Food and Beverage Servicing"}>Food and Beverage Servicing</MenuItem>
+                                    <MenuItem value={"Hair Dressing"}>Hair Dressing</MenuItem>
+                                    <MenuItem value={"Plumbing"}>Plumbing</MenuItem>
+                                    <MenuItem value={"Welding"}>Welding</MenuItem>
+                                    <MenuItem value={"Woodworking"}>Woodworking</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <Button sx={{display:'flex',flexDirection:'column',alignItems:'center'}} onClick={()=>setPosting(!posting)}><BorderColorIcon fontSize="medium" sx={{color:'black'}}/><Typography variant="caption" sx={{color:'black'}} >Post</Typography></Button>
+                            </div>
+                            <div style={{width:'100%'}}>
+                                {posting?<Modal open={posting} onClose={()=>setPosting(!posting)}>
+                                    <PostRequest setPosting={setPosting} fetchData={fetchData} />
+                                </Modal>:<></>}
+                            </div>
                         </div>
 
                         {fetchingData?

@@ -16,9 +16,6 @@ export default function ProfileLogoDropdown(props) {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log(localStorage.getItem('photoURL'))
-    console.log(localStorage.getItem('photoURL')!=="null"?true:false)
-    console.log(localStorage.getItem('displayName'))
   };
   const handleClose = () => {
     setAnchorEl(null);

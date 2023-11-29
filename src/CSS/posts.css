@@ -10,6 +10,13 @@
     justify-content: center;
     padding: 10px;
 }
+
+#feed-area-right{
+    width: 50%;
+    display: flex;
+    margin: 0 auto;
+    margin-top: 80px;
+}
 #feed-area-middle{
     width: 60%;
     display: flex;
@@ -170,4 +177,12 @@
 #sugo-logo{
     height:80px;
     border-radius: 50px;
+}
+
+#feed-area-post-btns{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: solid 1px rgb(218, 215, 215);
+    border-radius: 20px;
 }

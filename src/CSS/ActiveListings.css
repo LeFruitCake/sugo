@@ -1,0 +1,48 @@
+#ActiveListings-app-container{
+    margin-top: 10px;
+    width: 99%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#ActiveListings-mappedListings-container{
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+}
+
+#ActiveListings-mappedListings-container a{
+    text-decoration: none;
+    color: black;
+}
+
+#ActiveListings-mappedListings-container a:visited{
+    color:inherit;
+}
+
+#ActiveListings-mappedListings{
+    border: solid 1px rgb(190, 186, 186);
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+
+}
+
+#ActiveListings-User-Info{
+    display: flex;
+    width: fit-content;
+    justify-self: center;
+    align-self: center;
+    border-bottom: solid 1px rgb(230, 227, 227);
+}
+
+#ActiveListings-left{
+    width: 40%;
+    border-right: solid 2px black;
+    height: 85lvh;
+}
+#ActiveListings-right{
+    width: 59%;
+}

@@ -25,6 +25,7 @@ export const Auth = (props) =>{
                 localStorage.setItem('logStatus',true);
                 localStorage.setItem('photoURL',response.user.photoURL)
                 localStorage.setItem('displayName',response.user.displayName)
+                localStorage.setItem('uid',response.user.uid)
             }).catch((error)=>{
                 setMessage("Invalid email/password.")
                 setLoading(false)

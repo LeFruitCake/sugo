@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
-const PostRequest = () => {
+import { db, auth } from '../config/firebase';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+
+const PostRequest = (props) => {
     const [alert,setAlert] = useState("");
     const [posting,setPosting] = useState(false);
     const [category,setCategory] = useState("")
@@ -26,9 +30,10 @@ const PostRequest = () => {
                 setRequestTitle("")
                 setRequestDescription("")
                 setAmount(0)
-                fetchData()
+                props.fetchData()
                 setAlert("")
                 setPosting(false)
+                props.setPosting(false)
             }).catch((error)=>{
                 console.error(error)
                 setRequestTitle("")
@@ -73,7 +78,10 @@ const PostRequest = () => {
                     </FormControl>
                     <div id="amount-div"><span>Php</span><input onChange={(e)=>setAmount(e.target.value)} id="bid-amount" type="number" step="10" min="0" value={amount}/></div>
                 </div>
-                <Button onClick={postRequest} variant="contained" sx={{backgroundColor:'#CC8D1A',width:'100%', marginTop:'5px','&:hover':{backgroundColor:'#8d6211'}}}>{posting?<CircularProgress size={25}/>:<>Post</>}</Button>
+                <div style={{width:'100%',display:'flex',alignItems:'center', justifyContent:'flex-end' ,gap:'10px'}}>
+                    <Button onClick={()=>props.setPosting(false)} variant="contained" sx={{width:'80px', marginTop:'5px',}} color="error"> Cancel</Button>
+                    <Button onClick={postRequest} variant="contained" sx={{backgroundColor:'#CC8D1A',width:'80px', marginTop:'5px','&:hover':{backgroundColor:'#8d6211'}}}>{posting?<CircularProgress size={25}/>:<>Post</>}</Button>
+                </div>
             </div>
         </div>
     );

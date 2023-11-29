@@ -4,6 +4,8 @@ import { Auth } from "./Components/auth";
 import "./App.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
+import ActiveListings from "./Pages/ActiveListings";
+import Listing from "./Pages/Listing";
 function App() {
   const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   return (
@@ -33,7 +35,9 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Dashboard logInfo={setLogged} />} >
-                  <Route path="listings" element={<h1>listings</h1>} />
+                  <Route path="listings" element={<ActiveListings/>}>
+                    <Route path=":id" element={<Listing/>} />
+                  </Route>
                   <Route path="biddings" element={<h1>biddings</h1>} />
                   <Route path="history" element={<h1>history</h1>} />
                 </Route>
