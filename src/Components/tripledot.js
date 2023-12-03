@@ -27,6 +27,7 @@ export default function TripleDotOption(props) {
     .then(()=>{
       props.setReload(!props.reload)
       setLoading(false)
+      handleClose()
     }).catch((err)=>{
       console.log(err)
     })
@@ -36,7 +37,9 @@ export default function TripleDotOption(props) {
     await deleteDoc(doc(db,"Comments",props.commentID))
     .then(()=>{
       props.getComments()
+      props.setReload(!props.reload)
       setLoading(false)
+      handleClose()
     }).catch((err)=>{
       console.log(err)
     })
@@ -44,9 +47,11 @@ export default function TripleDotOption(props) {
 
   const editComment = () =>{
     props.setEditingComment(false)
+    handleClose()
   }
   const editPost = ()=>{
     props.setEditingPost(true)
+    handleClose()
   }
   return (
     <div>

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Chip, Skeleton, Typography } from '@mui/material';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet} from 'react-router-dom';
@@ -25,28 +25,40 @@ const ActiveListings = () => {
             console.error(err);
           }
     }
+    
     useEffect(()=>{
         fetchData()
-    },[])
+    },[])   
     return (
         <div id='ActiveListings-app-container'>
             <div id='ActiveListings-left'>
+                <div id='ActiveListings-User-Info'>
+                    <Typography variant='h4' >{`${localStorage.getItem('displayName')}'s Active Listings`}</Typography>
+                </div>
                 {!fetchingData?
                 <div style={{display:'flex',flexDirection:'column'}}>
-                    <div id='ActiveListings-User-Info'>
-                        <Typography variant='h4' >{`${localStorage.getItem('displayName')}'s Active Listings`}</Typography>
-                    </div>
+                    
                     <div id="ActiveListings-mappedListings-container">
                         {posts.map((post)=>(
                             <NavLink key={post.id} to={post.id} >
                                 <div  id='ActiveListings-mappedListings'>
                                     {post.title}
+                                    <Chip size='small' sx={{width:'fit-content',marginTop:'5px',backgroundColor:'white'}} variant='outlined' color='primary' label={post.category} ></Chip>
                                 </div>
                             </NavLink>
                         ))}
                     </div>
                 </div>
-                :<>False</>}
+                :
+                <div style={{display:'flex',flexDirection:'column', gap:'5px', justifyContent:'center', alignItems:'center', width:'100%'}}>
+                    <Skeleton variant='rounded' width={500} height={80} />
+                    <Skeleton variant='rounded' width={500} height={80} />
+                    <Skeleton variant='rounded' width={500} height={80} />
+                    <Skeleton variant='rounded' width={500} height={80} />
+                    <Skeleton variant='rounded' width={500} height={80} />
+                    <Skeleton variant='rounded' width={500} height={80} />
+                    <Skeleton variant='rounded' width={500} height={80} />
+                </div>}
             </div>
             <div id='ActiveListings-right'>
                 <Outlet context={[posts]}/>

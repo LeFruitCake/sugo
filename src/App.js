@@ -43,7 +43,6 @@ function App() {
                 </Route>
               </Routes>
             </BrowserRouter>
-            {/* <Posts logInfo={setLogged} /> */}
           </div>
         </>}
       </div>

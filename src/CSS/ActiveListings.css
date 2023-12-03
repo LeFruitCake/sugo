@@ -16,7 +16,9 @@
 #ActiveListings-mappedListings-container a{
     text-decoration: none;
     color: black;
+    width: 100%;
 }
+
 
 #ActiveListings-mappedListings-container a:visited{
     color:inherit;
@@ -27,7 +29,12 @@
     width: 100%;
     padding: 10px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
 
+#ActiveListings-mappedListings:hover{
+    background-color: rgb(236, 234, 234);
 }
 
 #ActiveListings-User-Info{
@@ -39,9 +46,11 @@
 }
 
 #ActiveListings-left{
+    display: flex;
+    flex-direction: column;
     width: 40%;
-    border-right: solid 2px black;
-    height: 85lvh;
+    /* border-right: solid 2px black; */
+    height: fit-content;
 }
 #ActiveListings-right{
     width: 59%;

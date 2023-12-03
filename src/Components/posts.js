@@ -54,7 +54,7 @@ export default function Posts(props){
     const fetchComments = async ()=>{
         try{
             const comments = await getDocs(
-                query(collection(db,"Comments"),orderBy("postDate","desc"))
+                query(collection(db,"Comments"),orderBy("postDate","asc"))
             );
             const filteredComments = comments.docs.map((comment)=>({
                 ...comment.data(),
@@ -62,7 +62,7 @@ export default function Posts(props){
             }))
             setComments(filteredComments);
         }catch(err){
-            console.err(err)
+            console.error(err)
         }
     }
     useEffect(()=>{
