@@ -4,7 +4,7 @@ import * as React from 'react';
 //Firebase
 import { auth, db} from "../config/firebase";
 import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where } from "firebase/firestore";//updateDoc, deleteDoc 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 //Component
 import BackgroundLetterAvatars from "./Avatar";
@@ -28,49 +28,11 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 
 export default function Posts(props){
-    const [posts,setPosts] = useState([]);
-    const [comments,setComments] = useState([]);
-    const [reload,setReload] = useState(false);
-    const [fetchingData,setFetchingData] = useState(false)
+    // const [posts,setPosts] = useState([])
+    const [filteredPosts, setFilteredPosts] = useState([])
     const [filteredCategory, setFilteredCategory] = useState("All")
     const [posting,setPosting] = useState(false)
-    const fetchData = async ()=>{
-        setFetchingData(true)
-        try {
-            const data = await getDocs(
-              query(collection(db, "Posts"), orderBy("postDate", "desc"))
-            );
-            const filteredData = data.docs.map((doc) => ({
-              ...doc.data(),
-              id: doc.id,
-            }));
-            setPosts(filteredData);
-            setFetchingData(false)
-            // console.log(posts)
-          } catch (err) {
-            // console.error(err);
-          }
-    }
-    const fetchComments = async ()=>{
-        try{
-            const comments = await getDocs(
-                query(collection(db,"Comments"),orderBy("postDate","asc"))
-            );
-            const filteredComments = comments.docs.map((comment)=>({
-                ...comment.data(),
-                id:comment.id,
-            }))
-            setComments(filteredComments);
-        }catch(err){
-            console.error(err)
-        }
-    }
-    useEffect(()=>{
-        fetchData()
-        fetchComments()
-    },[reload])
-
-    
+    const [bidding,setBidding] = useState(false)
     return(
         <>
             <div id="app-container-posts">
@@ -87,11 +49,11 @@ export default function Posts(props){
                                 sx={{backgroundColor:'white'}}
                                 value={filteredCategory}
                                 onChange={ async (e)=>{
-                                    setFetchingData(true)
+                                    props.setFetchingData(true)
                                     setFilteredCategory(e.target.value)
                                     try {
                                         if(e.target.value === "All"){
-                                            fetchData();
+                                            props.setReload(!props.reload);
                                         }else{
                                             const data = await getDocs(
                                                 query(collection(db, "Posts"), orderBy("postDate", "desc"),where("category","==",e.target.value))
@@ -100,9 +62,8 @@ export default function Posts(props){
                                                 ...doc.data(),
                                                 id: doc.id,
                                             }));
-                                            setPosts(filteredData)
-                                            setFetchingData(false)
-                                            console.log(posts)
+                                            setFilteredPosts(filteredData)
+                                            props.setFetchingData(false)
                                         }
                                     } catch (err) {
                                         console.error(err);
@@ -127,12 +88,17 @@ export default function Posts(props){
                             </div>
                             <div style={{width:'100%'}}>
                                 {posting?<Modal open={posting} onClose={()=>setPosting(!posting)}>
-                                    <PostRequest setPosting={setPosting} fetchData={fetchData} />
+                                    <PostRequest setPosting={setPosting} reload={props.reload} setReload={props.setReload} />
                                 </Modal>:<></>}
                             </div>
+                            {/* <div style={{width:'100%'}}>
+                                {bidding?<Modal  open={bidding} onClose={()=>setBidding(!bidding)}>
+                                    
+                                </Modal>:<></>}
+                            </div> */}
                         </div>
 
-                        {fetchingData?
+                        {props.fetchingData?
                         <>
                         <Stack spacing={1}>
                             <Skeleton animation="wave" variant="rounded" width={'100%'} height={100} />
@@ -144,14 +110,30 @@ export default function Posts(props){
                         </>:
                         <div id="mapped-posts">
                             {
-                            posts.length > 0?
-                            posts.map((post,index)=>{
-                                const mappedComments = comments.filter((comment)=>comment.postID === post.id);
-                                return(
-                                    <Post getComments={fetchComments} comment={mappedComments} key={index} post={post} reload={reload} setReload={setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
-                                )
-                            }):
-                            <><h1 style={{alignSelf:'center'}}>No Available Listing.</h1></>
+                                filteredCategory !== "All"?
+                                <>
+                                    {filteredPosts.length === 0?
+                                        <h1>No listing</h1>
+                                        :
+                                        filteredPosts.map((post,index)=>{
+                                            const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
+                                            return(
+                                                <Post setBidding={setBidding} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
+                                            )
+                                        })
+                                    }
+                                </>
+                                
+                                :props.posts?
+                                    props.posts.length > 0?
+                                            props.posts.map((post,index)=>{
+                                                const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
+                                                return(
+                                                    <Post setBidding={setBidding} fetchComments={props.fetchComments} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
+                                                )
+                                            }):
+                                        <><h1 style={{alignSelf:'center'}}>No Available Listing.</h1></>
+                                    :<>zero{console.log(props.posts)}</>
                             }
                         </div>}
                     </div>
@@ -226,9 +208,10 @@ function Post(props){
             userID:auth?.currentUser?.uid,
         })
         .then(()=>{
-            props.getComments()
+            props.fetchComments()
             setComment("")
             setLoading(false)
+            console.log("gone through")
         })
         .catch((error)=>{
             console.error(error)
@@ -298,7 +281,7 @@ function Post(props){
                                 <p style={{fontSize:'12px',marginTop:'-8px'}}>Posted on: {props.date}</p>
                             </div>
                         </div>
-                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<Button sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
+                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<Button onClick={props.setBidding(true)} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
                     </div>
                     <hr style={{color:'#CC8D1A'}}></hr>
                     <div style={{width:'100%'}} >

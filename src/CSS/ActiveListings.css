@@ -3,6 +3,7 @@
     width: 99%;
     display: flex;
     justify-content: space-between;
+    max-height: 85dvh;
 }
 
 #ActiveListings-mappedListings-container{

@@ -39,7 +39,7 @@ const Dashboard = (props) => {
                     </div>
                 </div>
                 <div>
-                    {location.pathname==="/"?<Posts/>:<></>}
+                    {location.pathname==="/"?<Posts setFetchingData={props.setFetchingData} fetchingData={props.fetchingData} reload={props.reload} setReload={props.setReload} comments={props.comments} posts={props.posts} fetchComments={props.fetchComments}/>:<></>}
                     <Outlet/>
                 </div>
             </div>  
