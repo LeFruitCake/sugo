@@ -1,5 +1,6 @@
-import { async } from "@firebase/util";
 import { addDoc, collection } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
+import { Button } from "@mui/material";
 
 
 const BidButton = (props) => {
@@ -36,12 +37,29 @@ const BidButton = (props) => {
     // }
     const postBid = async ()=>{
         await addDoc(collection(db,"Bids"),{
-            
+            amunt:props.amount,
+            userID: auth.currentUser.uid,
+            postID: props.post.id,
         })
+        .then(()=>{
+            props.setBidding(false)
+        })
+        .catch((e)=>{
+            props.setMessage("Failed to post bid request.")
+        })
+        // .finally(()=>{
+        //     props.setBidding(false)
+        // })
     }
     return (
         <div>
-            
+            <Button onClick={()=>{
+                if(props.amount < 0){
+                    props.setMessage("Please enter a positive amount/")
+                }else{
+                    postBid()
+                }
+            }} sx={{'&:hover':{backgroundColor:'#448292',color:'white'}}}>Save</Button>
         </div>
     );
 };

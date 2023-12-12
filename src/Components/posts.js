@@ -13,7 +13,7 @@ import PostRequest from "./PostRequest";
 import Comment from "./Comments";
 
 //MUI
-import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, MenuItem, Select, FormControl, InputLabel, Modal} from "@mui/material";
+import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, Modal, InputAdornment, Divider} from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FluorescentIcon from '@mui/icons-material/Fluorescent';
 import MuiAccordion from '@mui/material/Accordion';
@@ -24,79 +24,114 @@ import PhpIcon from '@mui/icons-material/Php';
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from '@mui/icons-material/Send';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-
-
+import BidForm from "./BidForm";
+import RadioIcon from '@mui/icons-material/Radio';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
+import BrunchDiningIcon from '@mui/icons-material/BrunchDining';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import CarpenterIcon from '@mui/icons-material/Carpenter';
+import PlumbingIcon from '@mui/icons-material/Plumbing';
+import ImportantDevicesIcon from '@mui/icons-material/ImportantDevices';
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import AirIcon from '@mui/icons-material/Air';
+import BuildIcon from '@mui/icons-material/Build';
+import SearchIcon from '@mui/icons-material/Search';
+import CopyrightIcon from '@mui/icons-material/Copyright';
 
 export default function Posts(props){
     // const [posts,setPosts] = useState([])
     const [filteredPosts, setFilteredPosts] = useState([])
     const [filteredCategory, setFilteredCategory] = useState("All")
     const [posting,setPosting] = useState(false)
-    const [bidding,setBidding] = useState(false)
+    const filter = async (label)=>{
+        props.setFetchingData(true)
+        setFilteredCategory(label)
+        try {
+            if(label === "All"){
+                props.setReload(!props.reload);
+            }else{
+                const data = await getDocs(
+                    query(collection(db, "Posts"), orderBy("postDate", "desc"),where("category","==",label))
+                )
+                const filteredData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setFilteredPosts(filteredData)
+                props.setFetchingData(false)
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
     return(
         <>
             <div id="app-container-posts">
                 <div id="feed-area">
+                    <div id="feed-area-left">
+                        <div id="fal-sub">
+                            <div id="fal-top">   
+                                <div id="fal-top-content">
+                                    <h1>SUGO</h1>
+                                    <h4>your hustle partner</h4>
+                                </div>
+                            </div>
+                            <div id="fal-mid">
+                                <Stack direction="column" spacing={0}>
+                                    <Button onClick={()=>filter("All")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>All</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Automotive")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Automotive</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Computer System Servicing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Computer System Servicing</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Cosmetology")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Cosmetology</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Tailoring")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Tailoring</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Electrical Systems")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Electrical Systems</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Electronics")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Electronics</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Food and Beverage Servicing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Food and Beverage Servicing</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Hair Dressing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Hair Dressing</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Plumbing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Plumbing</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Welding")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Welding</Button>
+                                    <Divider/>
+                                    <Button onClick={()=>filter("Woodworking")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Woodworking</Button>
+                                    <Divider/>
+                                </Stack>
+                            </div>
+                            <div id="fal-bot">
+                                <div style={{display:'flex', gap:'10px', alignItems:'center'}}>
+                                    <CopyrightIcon fontSize="large" /> <Typography variant="subtitle2" >Industry Elective 1 Final Project</Typography>
+                                </div>
+                                <div style={{display:'flex',flexDirection:'column'}}>
+                                    <Typography variant="caption">Jandel Macabecha</Typography>
+                                    <Typography variant="caption">Ross Mikhail Vestil</Typography>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="feed-area-middle">
                         <div id="feed-area-post-btns">
                             <div id="filter-container">
-                            <FormControl sx={{width:'80%'}} size="small">
-                                <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                                <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Category"
-                                sx={{backgroundColor:'white'}}
-                                value={filteredCategory}
-                                onChange={ async (e)=>{
-                                    props.setFetchingData(true)
-                                    setFilteredCategory(e.target.value)
-                                    try {
-                                        if(e.target.value === "All"){
-                                            props.setReload(!props.reload);
-                                        }else{
-                                            const data = await getDocs(
-                                                query(collection(db, "Posts"), orderBy("postDate", "desc"),where("category","==",e.target.value))
-                                            )
-                                            const filteredData = data.docs.map((doc) => ({
-                                                ...doc.data(),
-                                                id: doc.id,
-                                            }));
-                                            setFilteredPosts(filteredData)
-                                            props.setFetchingData(false)
-                                        }
-                                    } catch (err) {
-                                        console.error(err);
-                                    }
-                                }}
-                                >
-                                    <MenuItem value={"All"}>All</MenuItem>
-                                    <MenuItem value={"Automotive"}>Automotive</MenuItem>
-                                    <MenuItem value={"Computer System Servicing"}>Computer System Servicing</MenuItem>
-                                    <MenuItem value={"Cosmetology"}>Cosmetology</MenuItem>
-                                    <MenuItem value={"Dress Making"}>Dress Making</MenuItem>
-                                    <MenuItem value={"Electrical Systems"}>Electrical Systems</MenuItem>
-                                    <MenuItem value={"Electronics"}>Electronics</MenuItem>
-                                    <MenuItem value={"Food and Beverage Servicing"}>Food and Beverage Servicing</MenuItem>
-                                    <MenuItem value={"Hair Dressing"}>Hair Dressing</MenuItem>
-                                    <MenuItem value={"Plumbing"}>Plumbing</MenuItem>
-                                    <MenuItem value={"Welding"}>Welding</MenuItem>
-                                    <MenuItem value={"Woodworking"}>Woodworking</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <Button sx={{display:'flex',flexDirection:'column',alignItems:'center'}} onClick={()=>setPosting(!posting)}><BorderColorIcon fontSize="medium" sx={{color:'black'}}/><Typography variant="caption" sx={{color:'black'}} >Post</Typography></Button>
+                                
+                                <TextField type="search" variant="standard" placeholder="Search" sx={{width:'80%',backgroundColor:'white', border:'none', padding:'10px', borderRadius:'20px'}} InputProps={{
+                                    startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
+                                    disableUnderline:true,
+                                }}/>
+                                <Button sx={{display:'flex',flexDirection:'column',alignItems:'center'}} onClick={()=>setPosting(!posting)}><BorderColorIcon fontSize="medium" sx={{color:'black'}}/><Typography variant="caption" sx={{color:'black'}} >Post</Typography></Button>
+                                </div>
+                                <div style={{width:'100%'}}>
+                                    {posting?<Modal open={posting} onClose={()=>setPosting(!posting)}>
+                                        <PostRequest setPosting={setPosting} reload={props.reload} setReload={props.setReload} />
+                                    </Modal>:<></>}
+                                </div>
                             </div>
-                            <div style={{width:'100%'}}>
-                                {posting?<Modal open={posting} onClose={()=>setPosting(!posting)}>
-                                    <PostRequest setPosting={setPosting} reload={props.reload} setReload={props.setReload} />
-                                </Modal>:<></>}
-                            </div>
-                            {/* <div style={{width:'100%'}}>
-                                {bidding?<Modal  open={bidding} onClose={()=>setBidding(!bidding)}>
-                                    
-                                </Modal>:<></>}
-                            </div> */}
-                        </div>
 
                         {props.fetchingData?
                         <>
@@ -118,7 +153,7 @@ export default function Posts(props){
                                         filteredPosts.map((post,index)=>{
                                             const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
                                             return(
-                                                <Post setBidding={setBidding} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
+                                                <Post comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
                                             )
                                         })
                                     }
@@ -129,7 +164,7 @@ export default function Posts(props){
                                             props.posts.map((post,index)=>{
                                                 const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
                                                 return(
-                                                    <Post setBidding={setBidding} fetchComments={props.fetchComments} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
+                                                    <Post fetchComments={props.fetchComments} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
                                                 )
                                             }):
                                         <><h1 style={{alignSelf:'center'}}>No Available Listing.</h1></>
@@ -153,9 +188,9 @@ const AccordionStyled = styled((props) => (
     borderRadius:'5px',
     height:'fit-content',
     // backgroundColor:"#E3C75F",
-    '&:not(:last-child)': {
-      borderBottom: 0,
-    },
+    // '&:not(:last-child)': {
+    //   borderBottom: 0,
+    // },
     '&:before': {
       display: 'none',
     },
@@ -168,7 +203,8 @@ const AccordionStyled = styled((props) => (
     />
   ))
   (({ theme }) => ({
-    backgroundColor:'white',
+    // backgroundColor:'#164C45',
+    // color:'white',
     display:'flex',
     alignItems:'center',
     borderRadius:'5px',
@@ -193,6 +229,7 @@ function Post(props){
     const [editingPost,setEditingPost] = useState(false);
     const [requestDescription, setRequestDescription] = useState("")
     const [loading,setLoading] = useState(false)
+    const [bidding,setBidding] = useState(false)
     const handleChange = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     }
@@ -201,7 +238,7 @@ function Post(props){
         setLoading(true)
         await addDoc(collection(db,"Comments"),{
             postID:post.id,
-            photoURL:auth.currentUser.photoURL,
+            photoURL:auth.currentUser?.photoURL,
             displayName:auth.currentUser.displayName,
             comment:comment,
             postDate:serverTimestamp(),
@@ -215,6 +252,7 @@ function Post(props){
         })
         .catch((error)=>{
             console.error(error)
+            setLoading(false)
         })
     }
 
@@ -236,52 +274,119 @@ function Post(props){
         }
     }
     
+    const colorPicker = (label)=>{
+        switch (label){
+            case 'Electronics':
+                return 'mediumblue';
+            case 'Food and Beverage Servicing':
+                return 'coral';
+            case 'Cosmetology':
+                return 'hotpink';
+            case 'Welding':
+                return 'sienna';
+            case 'Tailoring':
+                return 'rebeccapurple'
+            case 'Computer System Servicing':
+                return 'teal'
+            case 'Woodworking':
+                return 'peru'
+            case 'Electrical Systems':
+                return 'dodgerblue'
+            case 'Plumbing':
+                return 'forestgreen'
+            case 'Automotive':
+                return 'black'
+            case 'Hair Dressing':
+                return 'dodgerblue'
+            default:
+                return 'grey';
+        }
+    }
+
+    const iconPicker = (label)=>{
+        switch (label){
+            case 'Automotive':
+                return <BuildIcon fontSize="small" style={{color:colorPicker(label)}} />
+            case 'Electronics':
+                return <RadioIcon fontSize="small" style={{color:colorPicker(label)}} />
+            case 'Cosmetology':
+                return <FaceRetouchingNaturalIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Tailoring':
+                return <ContentCutIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Woodworking':
+                return <CarpenterIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Computer System Servicing':
+                return <ImportantDevicesIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Welding':
+                return <LocalFireDepartmentIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Food and Beverage Servicing':
+                return <BrunchDiningIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Electrical Systems':
+                return <ElectricBoltIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Plumbing':
+                return <PlumbingIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            case 'Hair Dressing':
+                return <AirIcon fontSize="small" style={{color:colorPicker(label)}}/>
+            default:
+                return <FluorescentIcon/>
+        }
+    }
     
     return(
         <>
             <AccordionStyled expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                 <AccordionSummaryCustomized aria-controls="panel1d-content" id="panel1d-header">
-                <div style={{display:'flex',justifyContent:'space-between',width:'100%'}}>
-                    <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
-                        <Typography fontSize={20} variant="h3" gutterBottom>
-                            {props.post.title}
-                        </Typography>
-                        <Stack direction="row" spacing={1}>
-                            {auth?.currentUser?.uid === props.post.userID?
-                            <Stack direction="row" spacing={1} sx={{alignSelf:'flex-start'}}>
-                            <Chip icon={<FluorescentIcon />} color="warning" label="Yours" variant="outlined" size="small" />
-                            </Stack>:<></>}
-                            <Stack direction="row" spacing={1}>
-                                {props.post.category?<Chip label={props.post.category} variant="outlined" color="primary" size="small" />:<Chip label="None" variant="outlined" size="small" />}
-                            </Stack>
-                        </Stack>
-                        
-                    </div>
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-                        <div style={{display:'flex',flexDirection:'column'}} >
-                            {props.post.amount === 0?
-                                <Typography variant="button" gutterBottom fontSize={20}>FREE</Typography>:
-                                <Typography sx={{display:'flex'}} fontSize={30} variant="h3" gutterBottom>
-                                    {parseInt(props.post.amount).toLocaleString()}
-                                <PhpIcon  fontSize="large"/>
+                    <div style={{display:'flex',width:'100%'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',width:'100%',alignItems:'center'}}>
+                            <div style={{display:'flex',flexDirection:'column',justifyContent:'center', gap:'10px'}}>
+                                <Typography fontSize={20} variant="h3" gutterBottom>
+                                    {props.post.title}
                                 </Typography>
-                            }
-                            
+                                <Stack direction="row" spacing={1}>
+                                    {props.post.category?<Chip icon={iconPicker(props.post.category)} label={props.post.category} variant="outlined" sx={{backgroundColor:'white',color:colorPicker(props.post.category),padding:'5px',borderColor:colorPicker(props.post.category)}} size="small" />:<Chip label="None" variant="outlined" size="small" />}
+                                    {auth?.currentUser?.uid === props.post.userID?
+                                    <Stack direction="row" spacing={1} sx={{alignSelf:'flex-start'}}>
+                                    <Chip icon={<FluorescentIcon fontSize="small"/>} color="warning" label="Yours" variant="outlined" size="small" />
+                                    </Stack>:<></>}
+                                </Stack>
+                            </div>
+                            <div>
+                                <div style={{display:'flex',flexDirection:'column',height:'fit-content',justifyItemsItems:'center', alignItems:'center',margin:'0 auto'}} >
+                                    {props.post.amount === 0?
+                                        <Typography variant="caption" gutterBottom style={{color:'navy',fontWeight:'bold'}} fontSize={20}>Open Bid</Typography>:
+                                        <Typography sx={{display:'flex'}} fontSize={30} variant="h3" gutterBottom>
+                                            {parseInt(props.post.amount).toLocaleString()}
+                                        <PhpIcon  fontSize="large"/>
+                                        </Typography>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </AccordionSummaryCustomized>
                 <AccordionDetailsStyled>
                 <div style={{padding:'10px', backgroundColor:'white',marginTop:'5px'}}>
                     <div id="user-info-inputbox">
-                        <div style={{display:'flex', alignItems:'center',gap:'10px'}}>
+                        <div style={{display:'flex', alignItems:'center',gap:'10px',width:'100%'}}>
                             {props.post.photoURL?<img alt="userphoto" id="userPhoto" src={props.post.photoURL}/>:<BackgroundLetterAvatars size={60} name={props.post.displayName?props.post.displayName:"Anonymous"} />}
                             <div id="props-posts-info">
-                                <h3 style={{}}>{props.post.displayName}</h3>
+                                <h3 style={{width:'fit-content'}}>{props.post.displayName}</h3>
                                 <p style={{fontSize:'12px',marginTop:'-8px'}}>Posted on: {props.date}</p>
                             </div>
                         </div>
-                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<Button onClick={props.setBidding(true)} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
+                        <div style={{width:'100%',display:'flex'}}>
+                            {bidding?
+                            <Modal
+                                open={bidding}
+                                onClose={()=>setBidding(false)}
+                            >
+                                <BidForm post={props.post} amount = {props.post.amount} setBidding={setBidding}/>
+                            </Modal>
+                            :<></>
+                            }
+                        </div>
+                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<Button onClick={()=>setBidding(true)} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
+                        
                     </div>
                     <hr style={{color:'#CC8D1A'}}></hr>
                     <div style={{width:'100%'}} >
