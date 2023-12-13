@@ -67,7 +67,7 @@ const PostRequest = (props) => {
                             <MenuItem value={"Automotive"}>Automotive</MenuItem>
                             <MenuItem value={"Computer System Servicing"}>Computer System Servicing</MenuItem>
                             <MenuItem value={"Cosmetology"}>Cosmetology</MenuItem>
-                            <MenuItem value={"Dress Making"}>Dress Making</MenuItem>
+                            <MenuItem value={"Tailoring"}>Tailoring</MenuItem>
                             <MenuItem value={"Electrical Systems"}>Electrical Systems</MenuItem>
                             <MenuItem value={"Electronics"}>Electronics</MenuItem>
                             <MenuItem value={"Food and Beverage Servicing"}>Food and Beverage Servicing</MenuItem>

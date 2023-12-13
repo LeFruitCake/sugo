@@ -3,7 +3,7 @@ import * as React from 'react';
 
 //Firebase
 import { auth, db} from "../config/firebase";
-import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where } from "firebase/firestore";//updateDoc, deleteDoc 
+import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where, limit } from "firebase/firestore";//updateDoc, deleteDoc 
 import { useState } from "react";
 
 //Component
@@ -13,7 +13,7 @@ import PostRequest from "./PostRequest";
 import Comment from "./Comments";
 
 //MUI
-import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, Modal, InputAdornment, Divider} from "@mui/material";
+import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, Modal, InputAdornment, Divider, AccordionSummary} from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FluorescentIcon from '@mui/icons-material/Fluorescent';
 import MuiAccordion from '@mui/material/Accordion';
@@ -38,6 +38,10 @@ import AirIcon from '@mui/icons-material/Air';
 import BuildIcon from '@mui/icons-material/Build';
 import SearchIcon from '@mui/icons-material/Search';
 import CopyrightIcon from '@mui/icons-material/Copyright';
+import { useEffect } from "react";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
 export default function Posts(props){
     // const [posts,setPosts] = useState([])
@@ -230,6 +234,11 @@ function Post(props){
     const [requestDescription, setRequestDescription] = useState("")
     const [loading,setLoading] = useState(false)
     const [bidding,setBidding] = useState(false)
+    const [isBidderResult,setIsBidderResult] = useState(null)
+    const [reloader,setReloader] = useState(false)
+    const [bidAction, setBidAction] = useState(null)
+    const [biddersCount,setBiddersCount] = useState(0)
+    const [lowestBid,setLowestBid] = useState(0)
     const handleChange = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     }
@@ -297,7 +306,7 @@ function Post(props){
             case 'Automotive':
                 return 'black'
             case 'Hair Dressing':
-                return 'dodgerblue'
+                return 'crimson'
             default:
                 return 'grey';
         }
@@ -306,29 +315,72 @@ function Post(props){
     const iconPicker = (label)=>{
         switch (label){
             case 'Automotive':
-                return <BuildIcon fontSize="small" style={{color:colorPicker(label)}} />
+                return <BuildIcon fontSize="small" style={{color:'white'}} />
             case 'Electronics':
-                return <RadioIcon fontSize="small" style={{color:colorPicker(label)}} />
+                return <RadioIcon fontSize="small" style={{color:'white'}} />
             case 'Cosmetology':
-                return <FaceRetouchingNaturalIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <FaceRetouchingNaturalIcon fontSize="small" style={{color:'white'}}/>
             case 'Tailoring':
-                return <ContentCutIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <ContentCutIcon fontSize="small" style={{color:'white'}}/>
             case 'Woodworking':
-                return <CarpenterIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <CarpenterIcon fontSize="small" style={{color:'white'}}/>
             case 'Computer System Servicing':
-                return <ImportantDevicesIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <ImportantDevicesIcon fontSize="small" style={{color:'white'}}/>
             case 'Welding':
-                return <LocalFireDepartmentIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <LocalFireDepartmentIcon fontSize="small" style={{color:'white'}}/>
             case 'Food and Beverage Servicing':
-                return <BrunchDiningIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <BrunchDiningIcon fontSize="small" style={{color:'white'}}/>
             case 'Electrical Systems':
-                return <ElectricBoltIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <ElectricBoltIcon fontSize="small" style={{color:'white'}}/>
             case 'Plumbing':
-                return <PlumbingIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <PlumbingIcon fontSize="small" style={{color:'white'}}/>
             case 'Hair Dressing':
-                return <AirIcon fontSize="small" style={{color:colorPicker(label)}}/>
+                return <AirIcon fontSize="small" style={{color:'white'}}/>
             default:
                 return <FluorescentIcon/>
+        }
+    }
+    useEffect(() => {
+        const checkBidder = async () => {
+            const result = await isBidder(props.post.id);
+            setIsBidderResult(result);
+        };
+        
+        checkBidder();
+        getBidCount();
+        getLowestBid();
+    }, [props.post.id,reloader]);
+
+    const isBidder = async (postID) =>{
+        const data = await getDocs(
+            query(collection(db, "Bids"),where("postID","==",postID),where("userID","==",auth.currentUser.uid))
+        )
+        if(data.docs.length === 1){
+            const filteredData = data.docs.map((doc) => ({
+                ...doc.data(),
+                id:doc.id,
+            }));
+            return filteredData[0];
+        }
+        return false;
+    }
+
+    const getBidCount = async ()=>{
+        const data = await getDocs(
+            query(collection(db, "Bids"),where("postID","==",props.post.id))
+        )
+        setBiddersCount(data.docs.length)
+    }
+
+    const getLowestBid = async ()=>{
+        const data = await getDocs(
+            query(collection(db, "Bids"), where("postID", "==", props.post.id), orderBy("amount", "asc"), limit(1))
+        );
+    
+        if (data.docs.length === 1) {
+            setLowestBid(data.docs[0].data().amount)
+        }else{
+            setLowestBid(null)
         }
     }
     
@@ -340,18 +392,20 @@ function Post(props){
                         <div style={{display:'flex',justifyContent:'space-between',width:'100%',alignItems:'center'}}>
                             <div style={{display:'flex',flexDirection:'column',justifyContent:'center', gap:'10px'}}>
                                 <Typography fontSize={20} variant="h3" gutterBottom>
-                                    {props.post.title}
+                                    Re: <span style={{fontWeight:'bold'}}>{props.post.title}</span>
                                 </Typography>
                                 <Stack direction="row" spacing={1}>
-                                    {props.post.category?<Chip icon={iconPicker(props.post.category)} label={props.post.category} variant="outlined" sx={{backgroundColor:'white',color:colorPicker(props.post.category),padding:'5px',borderColor:colorPicker(props.post.category)}} size="small" />:<Chip label="None" variant="outlined" size="small" />}
+                                    {props.post.category?<Chip icon={iconPicker(props.post.category)} label={props.post.category} variant="outlined" sx={{backgroundColor:colorPicker(props.post.category),color:'white',padding:'5px',borderColor:colorPicker(props.post.category)}} size="small" />:<Chip label="None" variant="outlined" size="small" />}
                                     {auth?.currentUser?.uid === props.post.userID?
                                     <Stack direction="row" spacing={1} sx={{alignSelf:'flex-start'}}>
-                                    <Chip icon={<FluorescentIcon fontSize="small"/>} color="warning" label="Yours" variant="outlined" size="small" />
-                                    </Stack>:<></>}
+                                    <Chip icon={<FluorescentIcon fontSize="small"/>} color="warning" label="Yours" variant="filled" size="small" />
+                                    </Stack>:<>
+                                    {isBidderResult?<Chip sx={{backgroundColor:'DarkGreen', color:'white'}} icon={<AttachMoneyIcon fontSize="small" style={{color:'white'}}/> }  label="Bidder" variant="outlined" size="small" />:<></>}
+                                    </>}
                                 </Stack>
                             </div>
-                            <div>
-                                <div style={{display:'flex',flexDirection:'column',height:'fit-content',justifyItemsItems:'center', alignItems:'center',margin:'0 auto'}} >
+                            <div style={{width:'25%'}}>
+                                <div style={{display:'flex',flexDirection:'column',height:'fit-content',justifyItems:'flex-end', alignItems:'flex-end',margin:'0 auto',width:'100%'}} >
                                     {props.post.amount === 0?
                                         <Typography variant="caption" gutterBottom style={{color:'navy',fontWeight:'bold'}} fontSize={20}>Open Bid</Typography>:
                                         <Typography sx={{display:'flex'}} fontSize={30} variant="h3" gutterBottom>
@@ -359,6 +413,10 @@ function Post(props){
                                         <PhpIcon  fontSize="large"/>
                                         </Typography>
                                     }
+                                    <div style={{display:'flex',gap:'10px'}}>
+                                        <Typography sx={{display:'flex',alignItems:'center'}} variant="subtitle1" fontSize={12} style={{color:'gray'}}><AccountCircleIcon fontSize="small"/>Bidders: {biddersCount}</Typography>
+                                        <Typography sx={{display:'flex',alignItems:'center'}} variant="subtitle1" fontSize={12} style={{color:'gray'}}><KeyboardDoubleArrowDownIcon fontSize="small"/>Lowest Bid: {lowestBid?parseInt(lowestBid).toLocaleString():<><span style={{color:'red'}}> &nbsp;No Bids</span></>}</Typography>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -380,12 +438,12 @@ function Post(props){
                                 open={bidding}
                                 onClose={()=>setBidding(false)}
                             >
-                                <BidForm post={props.post} amount = {props.post.amount} setBidding={setBidding}/>
+                                <BidForm bid={isBidderResult} postID={props.post.id} action={bidAction} setBidAction={setBidAction} reloader={reloader} setReloader={setReloader} post={props.post} amount = {props.post.amount} setBidding={setBidding}/>
                             </Modal>
                             :<></>
                             }
                         </div>
-                        <div>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:<Button onClick={()=>setBidding(true)} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
+                        <div style={{width:'23%', display:'flex',justifyContent:'center'}}>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:isBidderResult?<Button onClick={()=>{setBidding(true);setBidAction("edit")}} sx={{alignSelf:'flex-end',backgroundColor:'darkorange',color:'white','&:hover':{backgroundColor:'rgb(190, 106, 3)'}}} variant="contained">Edit Bid</Button>:<Button onClick={()=>{setBidding(true);setBidAction("post")}} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
                         
                     </div>
                     <hr style={{color:'#CC8D1A'}}></hr>
@@ -407,14 +465,15 @@ function Post(props){
                     </div>
                 </div>
                 <Accordion sx={{border:'none', width:'100%', alignSelf:'center', marginTop:'10px'}}>
-                    <AccordionSummaryCustomized
+                    <AccordionSummary
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    style={{backgroundColor:'navy',color:'white'}}
                     >
                     <Typography sx={{marginLeft:'40%'}}>View Replies</Typography>
                     <AvatarGroup max={4}>
                     </AvatarGroup>
-                    </AccordionSummaryCustomized>
+                    </AccordionSummary>
                     <AccordionDetails>
                         <TextField InputProps={{
                             endAdornment:auth?.currentUser?.photoURL?<img alt="userphoto" style={{height:'36px',borderRadius:'18px'}} id="userPhoto" src={auth?.currentUser?.photoURL}/>:<BackgroundLetterAvatars size={36} name={auth?.currentUser?.displayName?auth.currentUser.displayName:"Anonymous"} />
@@ -426,7 +485,7 @@ function Post(props){
                         {props.comment
                             .filter((usercomment) => usercomment.postID === props.post.id)
                             .map((filteredComment, index) => (
-                                <Comment key={index} filteredComment={filteredComment} getComments={props.getComments} />
+                                <Comment key={index} filteredComment={filteredComment} getComments={props.fetchComments} />
                         ))}
                     </AccordionDetails>
                 </Accordion>

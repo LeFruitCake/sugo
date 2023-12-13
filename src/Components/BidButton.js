@@ -1,65 +1,55 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
 
 
 const BidButton = (props) => {
-    // const postRequest = async () =>{
-    //     if(requestTitle === "" || requestDescription === ""){
-    //         setAlert("Please provide request title.")
-    //     }else{
-    //         setPosting(true)
-    //         await addDoc(collection(db,"Posts"),{
-    //             title:requestTitle,
-    //             description:requestDescription,
-    //             amount:amount,
-    //             displayName:auth.currentUser.displayName,
-    //             photoURL:auth.currentUser.photoURL,
-    //             userID: auth?.currentUser?.uid,
-    //             category:category,
-    //             postDate:serverTimestamp(),
-    //         }).then(()=>{
-    //             setRequestTitle("")
-    //             setRequestDescription("")
-    //             setAmount(0)
-    //             props.fetchData()
-    //             setAlert("")
-    //             setPosting(false)
-    //             props.setPosting(false)
-    //         }).catch((error)=>{
-    //             console.error(error)
-    //             setRequestTitle("")
-    //             setRequestDescription("")
-    //             setAmount(0)
-    //             setAlert("Failed to post request.")
-    //         })
-    //     }
-    // }
+    const [loading,setLoading] = useState(false)
     const postBid = async ()=>{
+        setLoading(true)
         await addDoc(collection(db,"Bids"),{
-            amunt:props.amount,
+            amount:props.amount,
             userID: auth.currentUser.uid,
             postID: props.post.id,
         })
         .then(()=>{
+            setLoading(false)
             props.setBidding(false)
+            props.setReloader(!props.reloader)
         })
         .catch((e)=>{
+            setLoading(false)
             props.setMessage("Failed to post bid request.")
         })
-        // .finally(()=>{
-        //     props.setBidding(false)
-        // })
+    }
+    const editBid = async ()=>{
+        try{
+            await updateDoc(doc(db,'Bids',props.bid.id),{
+                amount:props.amount,
+            })
+            .then(()=>{
+                props.setBidding(false)
+                props.setReloader(!props.reloader)
+            })
+        }catch(error){
+            console.log(error)
+        }
     }
     return (
         <div>
-            <Button onClick={()=>{
+            <LoadingButton loading={loading} onClick={()=>{
                 if(props.amount < 0){
                     props.setMessage("Please enter a positive amount/")
                 }else{
-                    postBid()
+                    if(props.action ==='edit'){
+                        editBid()
+                    }else{
+                        postBid()
+                    }
                 }
-            }} sx={{'&:hover':{backgroundColor:'#448292',color:'white'}}}>Save</Button>
+            }}>Save</LoadingButton>
         </div>
     );
 };
