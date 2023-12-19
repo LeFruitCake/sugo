@@ -13,6 +13,7 @@ import { getDocs, query, collection, orderBy } from "firebase/firestore";
 import Dashboard from "./Pages/Dashboard";
 import ActiveListings from "./Pages/ActiveListings";
 import Listing from "./Pages/Listing";
+import Biddings from "./Pages/Biddings";
 function App() {
   const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   const [posts,setPosts] = useState([]);
@@ -52,6 +53,7 @@ function App() {
   useEffect(()=>{
       fetchData()
       fetchComments()
+      console.log(logged)
   },[reload])
   return (
     <div id="app-container">
@@ -83,7 +85,7 @@ function App() {
                   <Route path="listings" element={<ActiveListings getComments={fetchComments} posts={posts} comments={comments} reload={reload} setReload={setReload} />}>
                     <Route path=":id" element={<Listing/>} />
                   </Route>
-                  <Route path="biddings" element={<h1>biddings</h1>} />
+                  <Route path="biddings" element={<Biddings posts={posts}/>} />
                   <Route path="history" element={<h1>history</h1>} />
                 </Route>
               </Routes>

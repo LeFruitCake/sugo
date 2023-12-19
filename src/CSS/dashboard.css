@@ -15,23 +15,14 @@
     justify-content: center;
 }
 
-#navigation-bar-left h1{
-    position: absolute;
-    margin-top: 0px;
-}
 
-#navigation-bar-left h4{
-    position: absolute;
-    margin-top: 50px;
-}
-
-#navigation-bar-middle{
+/* #navigation-bar-middle{
     width: 50%;
     height: 70px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
+} */
 
 #navigation-bar-right{
     width: 25%;
@@ -68,8 +59,8 @@
 
 #navigation-bar-middle a.active{
     background-color: white;
-    color: #042940;
+    color: midnightblue;
     font-weight: bold;
-    border-bottom: solid 5px #042940;
+    /* border-bottom: solid 1px #042940; */
     /* width: 50%; */
 }

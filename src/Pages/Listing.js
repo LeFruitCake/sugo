@@ -29,6 +29,7 @@ const Listing = () => {
     
     
     useEffect(()=>{
+        setShowComments(true)
         const fetchData = async ()=>{
             try{
                 const data = await listings.filter((listing)=>listing.id === param.id)

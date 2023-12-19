@@ -25,9 +25,13 @@
     color:inherit;
 }
 
+#ActiveListings-mappedListings-container a.active{
+    background-color: rgb(236, 234, 234);
+}
+
 #ActiveListings-mappedListings{
     border: solid 1px rgb(190, 186, 186);
-    width: 100%;
+    /* width: 100%; */
     padding: 10px;
     border-radius: 5px;
     display: flex;

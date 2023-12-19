@@ -235,34 +235,28 @@
 #fal-sub{
     padding-left: 30px;
     padding-right: 30px;
-    height: 80dvh;
     /* border: solid 1px black; */
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
-#fal-top-content{
-    /* border: solid 1px black; */
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    flex-direction: column;
-}
-#fal-top-content h4{
-    margin-top: -30px;
-}
+
 
 #fal-bot{
     /* border: solid 1px black; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
 }
 
 #fal-mid{
     /* border: solid 1px black; */
     width: 100%;
+}
+
+.gridExample{
+    /* border: solid 1px black; */
 }
