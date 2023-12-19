@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { db } from '../config/firebase';
 import {Divider} from '@mui/material'
-import BackgroundLetterAvatars from '../Components/Avatar';
  
  
 const Biddings = (props) => {
@@ -22,7 +21,7 @@ const Biddings = (props) => {
               )
             );
       
-            if (isMounted && data.docs.length > 1) {
+            if (isMounted && data.docs.length >= 1) {
               const filteredData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
@@ -45,6 +44,7 @@ const Biddings = (props) => {
                       postDate: matchingPost.postDate,
                       bidAmount: bid.amount,
                       photoURL:matchingPost.photoURL,
+                      category:matchingPost.category,
                     };
                   }
                   return null;
@@ -52,8 +52,8 @@ const Biddings = (props) => {
       
                 if (isMounted) {
                   setBids(joinedData);
-                  
                 }
+                console.log(joinedData)
               }
             }
           } catch (error) {
@@ -91,9 +91,9 @@ function Bid(props){
                     <span><span style={{fontSize:'12px'}}>Posted by:</span> <span style={{fontWeight:'bold',fontSize:'15px'}}>{props.bid.displayName}</span></span>
                 </span>
             </div>
-            <div style={{display:'flex',flexDirection:'column'}}>
-                <span>{props.bid.postAmount}</span>
-                <span>{props.bid.bidAmount}</span>
+            <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end'}}>
+                <span>Price <span>{props.bid.postAmount}</span></span>
+                <span>Bid <span>{props.bid.bidAmount}</span></span>
             </div>
         </div>
     )

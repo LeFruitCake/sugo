@@ -62,7 +62,7 @@ export default function Posts(props){
     return(
         <>
                 <Container maxWidth="xl">
-                    <Grid container  paddingLeft={2} paddingTop={2} columnGap={1.2}>
+                    <Grid container height={'89dvh'}  paddingLeft={1} paddingTop={2} columnGap={1.2}>
                         <Grid className="gridExample" item md={2.8} xs={12} sx={{backgroundColor:'#f5f2f0',borderRadius:'5px'}}>
                             <div id="fal-sub">
                                 <div>
@@ -108,7 +108,7 @@ export default function Posts(props){
                             </div>
 
                         </Grid>
-                        <Grid sx={{overflowY:'scroll',maxHeight:'85dvh',backgroundColor:'#f5f2f0',borderRadius:'5px',padding:'10px'}} className="gridExample" item md={9} xs={12}>
+                        <Grid sx={{overflowY:'scroll',maxHeight:'90dvh',backgroundColor:'#f5f2f0',borderRadius:'5px',padding:'10px'}} className="gridExample" item md={9} xs={12}>
                             
                             <div id="feed-area-post-btns">
                                 <div id="filter-container">
@@ -166,114 +166,6 @@ export default function Posts(props){
                         </Grid>
                     </Grid>
                 </Container>
-            {/* <div id="app-container-posts">
-                <div id="feed-area">
-                    <div id="feed-area-left">
-                        <div id="fal-sub">
-                            <div id="fal-top">   
-                                <div id="fal-top-content">
-                                    <h1>SUGO</h1>
-                                    <h4>your hustle partner</h4>
-                                </div>
-                            </div>
-                            <div id="fal-mid">
-                                <Stack direction="column" spacing={0}>
-                                    <Button onClick={()=>filter("All")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>All</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Automotive")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Automotive</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Computer System Servicing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Computer System Servicing</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Cosmetology")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Cosmetology</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Tailoring")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Tailoring</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Electrical Systems")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Electrical Systems</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Electronics")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Electronics</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Food and Beverage Servicing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Food and Beverage Servicing</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Hair Dressing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Hair Dressing</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Plumbing")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Plumbing</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Welding")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Welding</Button>
-                                    <Divider/>
-                                    <Button onClick={()=>filter("Woodworking")} sx={{width:'100%',justifyContent:'flex-start',textTransform:'none'}}>Woodworking</Button>
-                                    <Divider/>
-                                </Stack>
-                            </div>
-                            <div id="fal-bot">
-                                <div style={{display:'flex', gap:'10px', alignItems:'center'}}>
-                                    <CopyrightIcon fontSize="large" /> <Typography variant="subtitle2" >Industry Elective 1 Final Project</Typography>
-                                </div>
-                                <div style={{display:'flex',flexDirection:'column'}}>
-                                    <Typography variant="caption">Jandel Macabecha</Typography>
-                                    <Typography variant="caption">Ross Mikhail Vestil</Typography>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="feed-area-middle">
-                        <div id="feed-area-post-btns">
-                            <div id="filter-container">
-                                
-                                <TextField type="search" variant="standard" placeholder="Search" sx={{width:'80%',backgroundColor:'white', border:'none', padding:'10px', borderRadius:'20px'}} InputProps={{
-                                    startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
-                                    disableUnderline:true,
-                                }}/>
-                                <Button sx={{display:'flex',flexDirection:'column',alignItems:'center'}} onClick={()=>setPosting(!posting)}><BorderColorIcon fontSize="medium" sx={{color:'black'}}/><Typography variant="caption" sx={{color:'black'}} >Post</Typography></Button>
-                                </div>
-                                <div style={{width:'100%'}}>
-                                    {posting?<Modal open={posting} onClose={()=>setPosting(!posting)}>
-                                        <PostRequest setPosting={setPosting} reload={props.reload} setReload={props.setReload} />
-                                    </Modal>:<></>}
-                                </div>
-                            </div>
-
-                        {props.fetchingData?
-                        <>
-                        <Stack spacing={1}>
-                            <Skeleton animation="wave" variant="rounded" width={'100%'} height={100} />
-                            <Skeleton animation="wave" variant="rounded" width={'100%'} height={100} />
-                            <Skeleton animation="wave" variant="rounded" width={'100%'} height={100} />
-                            <Skeleton animation="wave" variant="rounded" width={'100%'} height={100} />
-                            <Skeleton animation="wave" variant="rounded" width={'100%'} height={100} />
-                         </Stack>
-                        </>:
-                        <div id="mapped-posts">
-                            {
-                                filteredCategory !== "All"?
-                                <>
-                                    {filteredPosts.length === 0?
-                                        <h1>No listing</h1>
-                                        :
-                                        filteredPosts.map((post,index)=>{
-                                            const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
-                                            return(
-                                                <Post comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
-                                            )
-                                        })
-                                    }
-                                </>
-                                
-                                :props.posts?
-                                    props.posts.length > 0?
-                                            props.posts.map((post,index)=>{
-                                                const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
-                                                return(
-                                                    <Post fetchComments={props.fetchComments} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
-                                                )
-                                            }):
-                                        <><h1 style={{alignSelf:'center'}}>No Available Listing.</h1></>
-                                    :<>zero{console.log(props.posts)}</>
-                            }
-                        </div>}
-                    </div>
-                    
-                </div>
-            </div> */}
         </>
     )
 }

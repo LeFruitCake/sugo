@@ -13,7 +13,7 @@ import DoNotStepIcon from '@mui/icons-material/DoNotStep';
 import NoAccountsIcon from '@mui/icons-material/NoAccounts';
 
 
-const Listing = () => {
+const Listing = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
     let param = useParams()
@@ -129,8 +129,8 @@ const Listing = () => {
                                     <>
                                         <div style={{height:'95%',display:'flex',justifyContent:'center',alignItems:'center'}}>
                                             <Stack direction='column' spacing={2} alignItems='center'>
-                                                <NoAccountsIcon style={{fontSize:'200px',color:'silver'}} />
-                                                <Typography variant='caption1' style={{fontSize:'50px',color:'silver'}} >Zero Comments</Typography>
+                                                <NoAccountsIcon style={{fontSize:'60px',color:'silver'}} />
+                                                <Typography variant='caption1' style={{fontSize:'25px',color:'silver'}} >This post has yet garnered a comment</Typography>
                                             </Stack>
                                         </div> 
                                     </>
@@ -158,15 +158,15 @@ const Listing = () => {
                                     <Stack gap={3}>
                                         {bids.map((bid,index)=>(
                                             <>
-                                            <Bids bid={bid}/>
+                                            <Bids postID={bid.postID} reload={props.reload} setReload={props.setReload} bid={bid}/>
                                             <Divider/>
                                             </>
                                         ))}
                                     </Stack>
                                 </div>:<div style={{height:'95%',display:'flex',justifyContent:'center',alignItems:'center'}}>
                                             <Stack direction='column' spacing={2} alignItems='center'>
-                                                <DoNotStepIcon style={{fontSize:'200px',color:'silver'}} />
-                                                <Typography variant='caption1' style={{fontSize:'50px',color:'silver'}} >Bids came up empty.</Typography>
+                                                <DoNotStepIcon style={{fontSize:'60px',color:'silver'}} />
+                                                <Typography variant='caption1' style={{fontSize:'25px',color:'silver'}} >Bids came up empty.</Typography>
                                             </Stack>
                                 </div>    
                                 }

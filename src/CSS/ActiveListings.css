@@ -54,8 +54,11 @@
     display: flex;
     flex-direction: column;
     width: 40%;
-    /* border-right: solid 2px black; */
     height: fit-content;
+    border: solid 1px silver;
+    margin: 1rem;
+    max-height: 85dvh;
+    overflow-y: auto;
 }
 #ActiveListings-right{
     width: 59%;

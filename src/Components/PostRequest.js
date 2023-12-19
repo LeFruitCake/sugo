@@ -26,6 +26,7 @@ const PostRequest = (props) => {
                 userID: auth?.currentUser?.uid,
                 category:category,
                 postDate:serverTimestamp(),
+                status:'open',
             }).then(()=>{
                 setRequestTitle("")
                 setRequestDescription("")

@@ -12,7 +12,6 @@ import ImportantDevicesIcon from '@mui/icons-material/ImportantDevices';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import AirIcon from '@mui/icons-material/Air';
 import BuildIcon from '@mui/icons-material/Build';
-import FluorescentIcon from '@mui/icons-material/Fluorescent';
 import { Chip } from '@mui/material';
 
 const ChipComponent = (props) => {
@@ -41,7 +40,7 @@ const ChipComponent = (props) => {
             case 'Hair Dressing':
                 return 'crimson'
             default:
-                return 'grey';
+                return 'red';
         }
     }
 
@@ -70,12 +69,17 @@ const ChipComponent = (props) => {
             case 'Hair Dressing':
                 return <AirIcon fontSize="small" style={{color:'white'}}/>
             default:
-                return <FluorescentIcon/>
+                return null;
         }
     }
     
     return (
-        <Chip icon={iconPicker(props.category)} label={props.category} variant="outlined" sx={{backgroundColor:colorPicker(props.category),color:'white',padding:'5px',borderColor:colorPicker(props.category)}} size="small" />
+        <>
+            {props.category === ''?
+                <Chip label='Uncategorized' variant="outlined" color='error' size='small'/>
+                :<Chip icon={iconPicker(props.category)} label={props.category} variant="outlined" sx={{backgroundColor:colorPicker(props.category),color:'white',padding:'5px',borderColor:colorPicker(props.category)}} size="small" />
+            }
+        </>
     );
 };
 

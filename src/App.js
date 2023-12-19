@@ -53,7 +53,6 @@ function App() {
   useEffect(()=>{
       fetchData()
       fetchComments()
-      console.log(logged)
   },[reload])
   return (
     <div id="app-container">
@@ -83,7 +82,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard logInfo={setLogged} setFetchingData={setFetchingData} fetchingData={fetchingData} reload={reload} setReload={setReload} fetchComments={fetchComments} comments={comments} posts={posts} />} >
                   <Route path="listings" element={<ActiveListings getComments={fetchComments} posts={posts} comments={comments} reload={reload} setReload={setReload} />}>
-                    <Route path=":id" element={<Listing/>} />
+                    <Route path=":id" element={<Listing reload = {reload} setReload={setReload}/>} />
                   </Route>
                   <Route path="biddings" element={<Biddings posts={posts}/>} />
                   <Route path="history" element={<h1>history</h1>} />
