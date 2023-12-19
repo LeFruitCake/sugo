@@ -12,7 +12,7 @@ const Biddings = (props) => {
     const [bids,setBids] = useState([])
     useEffect(() => {
         let isMounted = true;
-      
+     
         const fetchBids = async () => {
           try {
             const data = await getDocs(
@@ -21,18 +21,18 @@ const Biddings = (props) => {
                 where("userID", "==", localStorage.getItem("uid"))
               )
             );
-      
-            if (isMounted && data.docs.length > 1) {
+     
+            if (isMounted && data.docs.length >= 1) {
               const filteredData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
               }));
-      
+     
               if (filteredData.length > 0) {
                 const filteredPosts = props.posts.filter((post) =>
                   filteredData.some((bid) => post.id === bid.postID)
                 );
-      
+     
                 const joinedData = filteredData.map((bid) => {
                   const matchingPost = filteredPosts.find(
                     (post) => post.id === bid.postID
@@ -49,19 +49,21 @@ const Biddings = (props) => {
                   }
                   return null;
                 }).filter(Boolean);
-      
+     
                 if (isMounted) {
                   setBids(joinedData);
-                  
+                 
                 }
+                console.log(joinedData);
               }
             }
+            console.log(data)
           } catch (error) {
             console.error("Error fetching bids:", error);
           }
-          
+         
         };
-      
+     
         fetchBids();
         return () => {
           isMounted = false;
@@ -85,15 +87,15 @@ function Bid(props){
     return(
         <div id='bid-container'>
             <div style={{display:'flex',flexDirection:'column'}}>
-                <span><span style={{fontWeight:'bold'}}>Re:</span> {props.bid.title}</span>
+                <span><span style={{fontWeight:'bold',fontSize:'20px'}}>Re:</span> <span style={{fontSize:'20px'}}>{props.bid.title}</span></span>
                 <span style={{display:'flex'}}>
                     {/* <span>{props.bid.photoURL?<img style={{width:'30px', borderRadius:'50%'}} src={props.bid.photoURL}/>:<BackgroundLetterAvatars name={props.bid.displayName} size={30}/>}</span> */}
-                    <span><span style={{fontSize:'12px'}}>Posted by:</span> <span style={{fontWeight:'bold',fontSize:'15px'}}>{props.bid.displayName}</span></span>
+                    <span><span style={{fontSize:'20px',fontWeight:'bold',}}>Posted by:</span> <span style={{fontSize:'20px'}}>{props.bid.displayName}</span></span>
                 </span>
             </div>
-            <div style={{display:'flex',flexDirection:'column'}}>
-                <span>{props.bid.postAmount}</span>
-                <span>{props.bid.bidAmount}</span>
+            <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end'}}>
+                <span><span style={{fontWeight:'bold',fontSize:'20px'}}>Price:</span> <span style={{fontSize:'20px'}}> {props.bid.postAmount}</span></span>
+                <span><span style={{fontWeight:'bold',fontSize:'20px'}}>Bid Amount:</span> <span style={{fontSize:'20px'}}>{props.bid.bidAmount}</span></span>
             </div>
         </div>
     )
