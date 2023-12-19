@@ -28,30 +28,32 @@ export default function Comment(props){
             const result = await isBidder();
             setIsBidderResult(result);
         };
+
+        const isBidder = async () =>{
+            const data = await getDocs(
+                query(collection(db, "Bids"),where("postID","==",props.filteredComment.postID),where("userID","==",props.filteredComment.userID))
+            )
+            if(data.docs.length === 1){
+                const filteredData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id:doc.id,
+                }));
+                return filteredData[0];
+            }
+            return false;
+        }
         
         checkBidder();
-    }, [props.filteredComment.postID]);
+    }, [props.filteredComment.postID, props.filteredComment.userID]);
 
-    const isBidder = async () =>{
-        const data = await getDocs(
-            query(collection(db, "Bids"),where("postID","==",props.filteredComment.postID),where("userID","==",props.filteredComment.userID))
-        )
-        if(data.docs.length === 1){
-            const filteredData = data.docs.map((doc) => ({
-                ...doc.data(),
-                id:doc.id,
-            }));
-            return filteredData[0];
-        }
-        return false;
-    }
+    
     return(
         <div id="comments" style={{display:'flex',gap:'5px',marginTop:'5px'}} >
             {props.filteredComment.photoURL?<img alt="userphoto" style={{height:'46px',borderRadius:'18px'}} src={props.filteredComment.photoURL} />:<BackgroundLetterAvatars size={46} name={props.filteredComment.displayName} />}
             <div id="comments-info">
                 <div style={{display:'flex',justifyContent:'space-between',width:'100%',height:'40px',alignItems:'center'}}>
                     <div style={{display:'flex',flexDirection:'column'}}>
-                        <bold>{isBidderResult?<Typography variant="caption1" style={{color:'silver',fontSize:'15px'}} ><WavingHandIcon fontSize="small" />Bidder</Typography>:<></>}</bold>
+                        {isBidderResult?<Typography variant="caption1" style={{color:'silver',fontSize:'15px'}} ><WavingHandIcon fontSize="small" />Bidder</Typography>:<></>}
                         <strong>{props.filteredComment.displayName}:</strong>
                     </div>
                     <div>{auth?.currentUser?.uid === props.filteredComment.userID?<TripleDotOption action="Comment" reload={props.reload} setReload = {props.setReload} getComments={props.getComments} commentID={props.filteredComment.id} setEditingComment={setEditingComment} />:<></>}</div>

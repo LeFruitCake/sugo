@@ -1,34 +1,19 @@
-import { Chip, Skeleton, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 // import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 // import { useEffect, useState } from 'react';
 import { NavLink, Outlet} from 'react-router-dom';
 // import { db} from '../config/firebase';
 import '../CSS/ActiveListings.css'
+import ChipComponent from '../Components/Chip';
+import { useEffect, useState } from 'react';
 
 
-const ActiveListings = (props) => {
-    // const [posts,setPosts] = useState([])
-    // const [fetchingData, setFetchingData] = useState(false)
-    // const fetchData = async ()=>{
-    //     setFetchingData(true)
-    //     try {
-    //         const data = await getDocs(
-    //           query(collection(db, "Posts"), orderBy("postDate", "desc"),where("userID","==",localStorage.getItem('uid')))
-    //         );
-    //         const filteredData = data.docs.map((doc) => ({
-    //           ...doc.data(),
-    //           id: doc.id,
-    //         }));
-    //         setPosts(filteredData);
-    //         setFetchingData(false)
-    //       } catch (err) {
-    //         console.error(err);
-    //       }
-    // }
-    
-    // useEffect(()=>{
-    //     fetchData()
-    // },[])   
+const ActiveListings = (props) => { 
+    const [posts,setPosts] = useState([])
+    useEffect(()=>{
+        const data = props.posts.filter((post)=>post.userID === localStorage.getItem('uid'))
+        setPosts(data)
+    },[props.posts])
     return (
         <div id='ActiveListings-app-container'>
             <div id='ActiveListings-left'>
@@ -40,12 +25,14 @@ const ActiveListings = (props) => {
                     
                     <div id="ActiveListings-mappedListings-container">
                         {
-                            props.posts?
-                            props.posts.filter((post)=>post.userID === localStorage.getItem('uid')).map((post)=>(
+                            posts?
+                            posts.map((post)=>(
                                 <NavLink key={post.id} to={post.id} >
                                     <div  id='ActiveListings-mappedListings'>
                                         {post.title}
-                                        <Chip size='small' sx={{width:'fit-content',marginTop:'5px',backgroundColor:'white'}} variant='outlined' color='primary' label={post.category} ></Chip>
+                                        <Stack direction="row" spacing={1}>
+                                            <ChipComponent category={post.category} ></ChipComponent>
+                                        </Stack>
                                     </div>
                                 </NavLink>
                             ))
@@ -64,7 +51,7 @@ const ActiveListings = (props) => {
                 </div>
             </div>
             <div id='ActiveListings-right'>
-                <Outlet context={[props.posts, props.comments]}/>
+                <Outlet context={[props.posts, props.comments,props.reload,props.setReload,props.getComments]}/>
             </div>
         </div>
     );

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 //Firebase
 import { auth, db} from "../config/firebase";
-import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where, limit } from "firebase/firestore";//updateDoc, deleteDoc 
+import { collection, getDocs, addDoc,updateDoc, serverTimestamp, query, orderBy, doc, where} from "firebase/firestore";//updateDoc, deleteDoc 
 import { useState } from "react";
 
 //Component
@@ -11,6 +11,7 @@ import BackgroundLetterAvatars from "./Avatar";
 import TripleDotOption from "./tripledot";
 import PostRequest from "./PostRequest";
 import Comment from "./Comments";
+import ChipComponent from "./Chip";
 
 //MUI
 import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, Modal, InputAdornment, Divider, AccordionSummary} from "@mui/material";
@@ -25,17 +26,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from '@mui/icons-material/Send';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import BidForm from "./BidForm";
-import RadioIcon from '@mui/icons-material/Radio';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
-import BrunchDiningIcon from '@mui/icons-material/BrunchDining';
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import CarpenterIcon from '@mui/icons-material/Carpenter';
-import PlumbingIcon from '@mui/icons-material/Plumbing';
-import ImportantDevicesIcon from '@mui/icons-material/ImportantDevices';
-import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
-import AirIcon from '@mui/icons-material/Air';
-import BuildIcon from '@mui/icons-material/Build';
 import SearchIcon from '@mui/icons-material/Search';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { useEffect } from "react";
@@ -257,7 +247,6 @@ function Post(props){
             props.fetchComments()
             setComment("")
             setLoading(false)
-            console.log("gone through")
         })
         .catch((error)=>{
             console.error(error)
@@ -283,73 +272,6 @@ function Post(props){
         }
     }
     
-    const colorPicker = (label)=>{
-        switch (label){
-            case 'Electronics':
-                return 'mediumblue';
-            case 'Food and Beverage Servicing':
-                return 'coral';
-            case 'Cosmetology':
-                return 'hotpink';
-            case 'Welding':
-                return 'sienna';
-            case 'Tailoring':
-                return 'rebeccapurple'
-            case 'Computer System Servicing':
-                return 'teal'
-            case 'Woodworking':
-                return 'peru'
-            case 'Electrical Systems':
-                return 'dodgerblue'
-            case 'Plumbing':
-                return 'forestgreen'
-            case 'Automotive':
-                return 'black'
-            case 'Hair Dressing':
-                return 'crimson'
-            default:
-                return 'grey';
-        }
-    }
-
-    const iconPicker = (label)=>{
-        switch (label){
-            case 'Automotive':
-                return <BuildIcon fontSize="small" style={{color:'white'}} />
-            case 'Electronics':
-                return <RadioIcon fontSize="small" style={{color:'white'}} />
-            case 'Cosmetology':
-                return <FaceRetouchingNaturalIcon fontSize="small" style={{color:'white'}}/>
-            case 'Tailoring':
-                return <ContentCutIcon fontSize="small" style={{color:'white'}}/>
-            case 'Woodworking':
-                return <CarpenterIcon fontSize="small" style={{color:'white'}}/>
-            case 'Computer System Servicing':
-                return <ImportantDevicesIcon fontSize="small" style={{color:'white'}}/>
-            case 'Welding':
-                return <LocalFireDepartmentIcon fontSize="small" style={{color:'white'}}/>
-            case 'Food and Beverage Servicing':
-                return <BrunchDiningIcon fontSize="small" style={{color:'white'}}/>
-            case 'Electrical Systems':
-                return <ElectricBoltIcon fontSize="small" style={{color:'white'}}/>
-            case 'Plumbing':
-                return <PlumbingIcon fontSize="small" style={{color:'white'}}/>
-            case 'Hair Dressing':
-                return <AirIcon fontSize="small" style={{color:'white'}}/>
-            default:
-                return <FluorescentIcon/>
-        }
-    }
-    useEffect(() => {
-        const checkBidder = async () => {
-            const result = await isBidder(props.post.id);
-            setIsBidderResult(result);
-        };
-        
-        checkBidder();
-        getBidCount();
-        getLowestBid();
-    }, [props.post.id,reloader]);
 
     const isBidder = async (postID) =>{
         const data = await getDocs(
@@ -365,24 +287,36 @@ function Post(props){
         return false;
     }
 
-    const getBidCount = async ()=>{
-        const data = await getDocs(
-            query(collection(db, "Bids"),where("postID","==",props.post.id))
-        )
-        setBiddersCount(data.docs.length)
-    }
-
-    const getLowestBid = async ()=>{
-        const data = await getDocs(
-            query(collection(db, "Bids"), where("postID", "==", props.post.id), orderBy("amount", "asc"), limit(1))
-        );
-    
-        if (data.docs.length === 1) {
-            setLowestBid(data.docs[0].data().amount)
-        }else{
-            setLowestBid(null)
+    useEffect(() => {
+        const checkBidder = async () => {
+            const result = await isBidder(props.post.id);
+            setIsBidderResult(result);
+        };
+        const getBidCount = async ()=>{
+            const data = await getDocs(
+                query(collection(db, "Bids"),where("postID","==",props.post.id))
+            )
+            setBiddersCount(data.docs.length)
         }
-    }
+    
+        const getLowestBid = async ()=>{
+            const data = await getDocs(
+                query(collection(db, "Bids"), where("postID", "==", props.post.id), orderBy("amount", "asc"))
+            );
+            if (data.docs.length > 0) {
+                const amounts = data.docs.map(doc => doc.data().amount);
+                const min = Math.min(...amounts);
+                setLowestBid(min)
+            }else{
+                setLowestBid(null)
+            }
+        }
+        
+        checkBidder();
+        getBidCount();
+        getLowestBid();
+
+    }, [props.post.id,reloader]);
     
     return(
         <>
@@ -395,7 +329,7 @@ function Post(props){
                                     Re: <span style={{fontWeight:'bold'}}>{props.post.title}</span>
                                 </Typography>
                                 <Stack direction="row" spacing={1}>
-                                    {props.post.category?<Chip icon={iconPicker(props.post.category)} label={props.post.category} variant="outlined" sx={{backgroundColor:colorPicker(props.post.category),color:'white',padding:'5px',borderColor:colorPicker(props.post.category)}} size="small" />:<Chip label="None" variant="outlined" size="small" />}
+                                    {props.post.category?<ChipComponent category={props.post.category} />:<Chip label="Uncategorized" variant="outlined" size="small" color="error" />}
                                     {auth?.currentUser?.uid === props.post.userID?
                                     <Stack direction="row" spacing={1} sx={{alignSelf:'flex-start'}}>
                                     <Chip icon={<FluorescentIcon fontSize="small"/>} color="warning" label="Yours" variant="filled" size="small" />
@@ -407,7 +341,7 @@ function Post(props){
                             <div style={{width:'25%'}}>
                                 <div style={{display:'flex',flexDirection:'column',height:'fit-content',justifyItems:'flex-end', alignItems:'flex-end',margin:'0 auto',width:'100%'}} >
                                     {props.post.amount === 0?
-                                        <Typography variant="caption" gutterBottom style={{color:'navy',fontWeight:'bold'}} fontSize={20}>Open Bid</Typography>:
+                                        <Typography variant="caption" gutterBottom style={{color:'forestgreen',fontWeight:'bold'}} fontSize={20}>Open Bid</Typography>:
                                         <Typography sx={{display:'flex'}} fontSize={30} variant="h3" gutterBottom>
                                             {parseInt(props.post.amount).toLocaleString()}
                                         <PhpIcon  fontSize="large"/>
@@ -468,7 +402,7 @@ function Post(props){
                     <AccordionSummary
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                    style={{backgroundColor:'navy',color:'white'}}
+                    style={{backgroundColor:'rgb(61, 129, 197)',color:'white'}}
                     >
                     <Typography sx={{marginLeft:'40%'}}>View Replies</Typography>
                     <AvatarGroup max={4}>

@@ -34,6 +34,7 @@ export default function TripleDotOption(props) {
   }
   const deleteComment = async (id) =>{
     setLoading(true)
+    console.log(props.commentID)
     await deleteDoc(doc(db,"Comments",props.commentID))
     .then(()=>{
       props.getComments()

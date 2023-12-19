@@ -13,6 +13,8 @@ const BidButton = (props) => {
             amount:props.amount,
             userID: auth.currentUser.uid,
             postID: props.post.id,
+            displayName: auth.currentUser.displayName,
+            photoURL: auth.currentUser.photoURL,
         })
         .then(()=>{
             setLoading(false)

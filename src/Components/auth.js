@@ -4,6 +4,7 @@ import { useState } from "react";
 import "../CSS/auth.css"
 import { Button, CircularProgress, TextField } from "@mui/material";
 import PasswordField from "./passwordComponent";
+import { useNavigate } from "react-router-dom";
 export const Auth = (props) =>{
     const [firstname,setFirstName] = useState("")
     const [lastname, setLastName] = useState("")
@@ -12,6 +13,7 @@ export const Auth = (props) =>{
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
     const [loading,setLoading] = useState(false)
+    let navigate = useNavigate()
     const Login = async () => {
         if(username === "" || password === ""){
             setMessage("Incomplete fields.")
@@ -26,7 +28,8 @@ export const Auth = (props) =>{
                 localStorage.setItem('photoURL',response.user.photoURL)
                 localStorage.setItem('displayName',response.user.displayName)
                 localStorage.setItem('uid',response.user.uid)
-            }).catch((error)=>{
+                navigate('/')
+        }).catch((error)=>{
                 setMessage("Invalid email/password.")
                 setLoading(false)
             })
@@ -60,6 +63,7 @@ export const Auth = (props) =>{
             localStorage.setItem('logStatus',true);
             localStorage.setItem('photoURL',response.user.photoURL)
             localStorage.setItem('displayName',response.user.displayName)
+            navigate('/')
         }).catch((error)=>{
             console.log(error)
         })
@@ -74,6 +78,7 @@ export const Auth = (props) =>{
             localStorage.setItem('logStatus',true);
             localStorage.setItem('photoURL',response.user.photoURL)
             localStorage.setItem('displayName',response.user.displayName)
+            navigate('/')
         }).catch((err)=>{
             console.log(err.message)
         })

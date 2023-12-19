@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css"
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 //components
 import { Auth } from "./Components/auth";
@@ -55,6 +55,7 @@ function App() {
   },[reload])
   return (
     <div id="app-container">
+          <BrowserRouter>
       <div style={{backgroundColor: logged? "white" : "#164C45" }} id="app-container">
         {!logged?
         <>
@@ -77,20 +78,19 @@ function App() {
         </>:
         <>
           <div id="dashboard">
-            <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Dashboard logInfo={setLogged} setFetchingData={setFetchingData} fetchingData={fetchingData} reload={reload} setReload={setReload} fetchComments={fetchComments} comments={comments} posts={posts} />} >
-                  <Route path="listings" element={<ActiveListings posts={posts} comments={comments} />}>
+                  <Route path="listings" element={<ActiveListings getComments={fetchComments} posts={posts} comments={comments} reload={reload} setReload={setReload} />}>
                     <Route path=":id" element={<Listing/>} />
                   </Route>
                   <Route path="biddings" element={<h1>biddings</h1>} />
                   <Route path="history" element={<h1>history</h1>} />
                 </Route>
               </Routes>
-            </BrowserRouter>
           </div>
         </>}
       </div>
+          </BrowserRouter>
     </div>
   );
 }
