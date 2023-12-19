@@ -11,7 +11,7 @@ import Logout from '@mui/icons-material/Logout';
 import { auth } from '../config/firebase';
 import BackgroundLetterAvatars from './Avatar';
 
-export default function AccountMenu(props) {
+export default function ProfileLogoDropdown(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -37,7 +37,7 @@ export default function AccountMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            {auth?.currentUser?.photoURL?<img alt="userphoto" id="userPhoto" src={auth?.currentUser?.photoURL}/>:<BackgroundLetterAvatars size={60} name={auth?.currentUser?.displayName?auth.currentUser.displayName:"Anonymous"} />}
+            {localStorage.getItem('photoURL')!=="null"?<img alt="userphoto" id="userPhoto" src={localStorage.getItem('photoURL')}/>:localStorage.getItem('displayName')?<BackgroundLetterAvatars size={60} name={localStorage.getItem('displayName')} />:<BackgroundLetterAvatars size={60} name={"Anonymous"} />}
           </IconButton>
         </Tooltip>
       </Box>

@@ -7,7 +7,6 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
-
 export default function TripleDotOption(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -28,16 +27,20 @@ export default function TripleDotOption(props) {
     .then(()=>{
       props.setReload(!props.reload)
       setLoading(false)
+      handleClose()
     }).catch((err)=>{
       console.log(err)
     })
   }
   const deleteComment = async (id) =>{
     setLoading(true)
+    console.log(props.commentID)
     await deleteDoc(doc(db,"Comments",props.commentID))
     .then(()=>{
       props.getComments()
+      props.setReload(!props.reload)
       setLoading(false)
+      handleClose()
     }).catch((err)=>{
       console.log(err)
     })
@@ -45,9 +48,11 @@ export default function TripleDotOption(props) {
 
   const editComment = () =>{
     props.setEditingComment(false)
+    handleClose()
   }
   const editPost = ()=>{
     props.setEditingPost(true)
+    handleClose()
   }
   return (
     <div>

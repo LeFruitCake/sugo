@@ -35,7 +35,7 @@ export default function BackgroundLetterAvatars(props) {
   const userName = props.name.split(" ")
   return (
     <>
-    {userName[1] === "" ||userName[1] === undefined?<Avatar sx={{width:60,height:60,}}>{userName[0].substring(0,1)}</Avatar>:<Avatar {...stringAvatar(props.name,props.size)} />}
+    {userName[1] === "" ||userName[1] === undefined?<Avatar sx={{width:props.size,height:props.size,}}>{userName[0].substring(0,1)}</Avatar>:<Avatar {...stringAvatar(props.name,props.size)} />}
     </>
     
   );

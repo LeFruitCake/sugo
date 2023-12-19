@@ -3,59 +3,6 @@
     /* border: solid 1px black; */
 }
 
-#posts-navigation-bar{
-    padding: 10px;
-    width: 98.5%;
-    /* border: solid 1px black; */
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #164C45;
-}
-
-#posts-navigation-bar-sugo{
-    /* border: solid 1px black; */
-    padding: 0px;
-    height: fit-content;
-    display: flex;
-    width: 50%;
-    align-items: center;
-    margin-left: 50px;
-}
-
-#posts-navigation-bar-right{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    /* border: solid 1px black; */
-}
-
-#navigation-left-search{
-    border: solid 1px black;
-    border-radius: 20px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center ;
-    padding: 5px;
-    width: 50%;
-    background-color: white;
-    height: 30px;
-}
-#search-icon{
-    height: 30px;
-}
-
-#search-bar{
-    font-size: 12px;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: transparent;
-}
-
-#search-bar:focus{
-    outline: none;
-}
 
 #feed-area{
     /* background-color: #f5f2f0; */
@@ -63,28 +10,36 @@
     justify-content: space-between;
     padding: 10px;
 }
-#feed-area-right{
-    height: 90lvh;
-    width: 22%;
-    border-radius: 20px;
-    position: sticky;
-    top:0;
-}
+
 #feed-area-left{
-    width: 22%;
-    border-radius: 20px;
-    height: 90lvh;
+    background-color: #f5f2f0;
+    /* border: solid 1px black; */
+    border-radius: 5px;
     position: sticky;
-    top:0;
+    top: 10px;
+    height: 88dvh;
+    width: 23%;
+}
+
+#feed-area-right{
+    width: 30%;
+    display: flex;
+    margin: 0 auto;
+    margin-top: 10%
 }
 #feed-area-middle{
-    width: 50%;
+    color: rgb(61, 129, 197);
+    background-color: #f5f2f0;
+    /* border-radius: 10px; */
+    padding: 20px;
+    width: 73%;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    
-    
+    overflow-y: scroll;
+    max-height: 82dvh;
 }
+
 #posts-userphoto{
     height: 50px;
     border-radius: 25px;
@@ -108,9 +63,9 @@
 }
 
 #post-request{
-    padding: 10px;
+    padding: 20px;
     background-color: white;
-    /* border: solid 1px black; */
+    border-radius: 20px;
     width: 95%;
     height: fit-content;
     display: flex;
@@ -141,6 +96,7 @@
     display: flex;;
     align-items: center;
     justify-content: space-between;
+    /* border: solid 1px black; */
 }
 
 #user-info-inputbox-left{
@@ -156,6 +112,7 @@
     justify-content: flex-end;
     height: 50%;
     margin-top: 5px;
+    color: rgb(190, 106, 3);
 }
 
 #amount-div{
@@ -205,6 +162,7 @@
 #props-posts-info{
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 #post-post-info{
     margin: 0px;
@@ -222,6 +180,7 @@
     display: flex;
     width: 100%;
     flex-direction: column;
+    gap: 10px;
 }
 
 
@@ -231,11 +190,73 @@
     align-items:center;
     justify-content: space-around;
     height: 70px;
-    border: solid 1px rgb(228, 221, 221);
+    /* border: solid 1px rgb(228, 221, 221); */
     border-radius: 35px;
 }
 
 #sugo-logo{
     height:80px;
     border-radius: 50px;
+}
+
+#feed-area-post-btns{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* border: solid 1px rgb(218, 215, 215); */
+    border-radius: 20px;
+}
+
+#bidform-container{
+    background-color: white;
+    width: 20%;
+    margin: 0 auto;
+    margin-top: 15%;
+    border-radius: 5px;
+}
+
+#bidform-subcontainer{
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;   
+    align-items: center;
+    gap: 40px;
+}
+#bidform-buttons{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    /* border: solid 1px black; */
+    color: #164C45;
+    
+}
+
+
+#fal-sub{
+    padding-left: 30px;
+    padding-right: 30px;
+    /* border: solid 1px black; */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+
+#fal-bot{
+    /* border: solid 1px black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#fal-mid{
+    /* border: solid 1px black; */
+    width: 100%;
+}
+
+.gridExample{
+    /* border: solid 1px black; */
 }

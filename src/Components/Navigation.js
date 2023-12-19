@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { auth } from "../config/firebase";
 
-export default function LeftNavigation(props) {
+export default function Navigation(props) {
   const [showTransactionHistory, setShowTransactionHistory] = React.useState(true);
   const [showActiveListings, setShowActiveListings] = React.useState(true);
   const [activeListing, setActiveListing] = useState([]);

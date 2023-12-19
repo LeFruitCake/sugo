@@ -32,6 +32,10 @@ input{
     color: white;
 }
 
+#login-btn:hover{
+    background-color: #c2871b;
+}
+
 #forgotpassword-btn{
     background-color: transparent;
     border: none;
@@ -51,6 +55,10 @@ input{
     width: fit-content;
     align-self: center;
     color: white;
+}
+
+#register-btn:hover{
+    background-color: #0e413a;
 }
 
 #register-container{
