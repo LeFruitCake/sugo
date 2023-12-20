@@ -31,7 +31,7 @@ const Biddings = (props) => {
       
               if (filteredData.length > 0) {
                 const filteredPosts = props.posts.filter((post) =>
-                  filteredData.some((bid) => post.id === bid.postID)
+                  filteredData.some((bid) => post.id === bid.postID) && post.status === 'open'
                 );
       
                 const joinedData = filteredData.map((bid) => {
