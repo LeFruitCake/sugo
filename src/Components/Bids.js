@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import BackgroundLetterAvatars from './Avatar';
 import { Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 import PhpIcon from '@mui/icons-material/Php';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { LoadingButton } from '@mui/lab';
+import { useNavigate } from 'react-router-dom';
 
 
 const Bids = (props) => {
     const [confirmEmploy,setConfirmEmploy] = useState(false)
     const [loading,setLoading] = useState(false)
+    const navigate = useNavigate()
     const editPost = async ()=>{
         try{
             setLoading(true)
@@ -19,10 +21,12 @@ const Bids = (props) => {
                 employeeName:props.bid.displayName,
                 employeePhotoURL:props.bid.photoURL,
                 amount:props.bid.amount,
+                completionDate:serverTimestamp(),
             }).then(()=>{
                 setConfirmEmploy(false)
                 setLoading(false)
                 props.setReload(!props.reload)
+                navigate('/listings')
             })
             // alert(props.postID)
         }catch(error){

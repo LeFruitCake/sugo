@@ -14,6 +14,7 @@ import Dashboard from "./Pages/Dashboard";
 import ActiveListings from "./Pages/ActiveListings";
 import Listing from "./Pages/Listing";
 import Biddings from "./Pages/Biddings";
+import TransactionHistory from "./Pages/TransactionHistory";
 function App() {
   const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   const [posts,setPosts] = useState([]);
@@ -86,7 +87,7 @@ function App() {
                     <Route path=":id" element={<Listing reload = {reload} setReload={setReload}/>} />
                   </Route>
                   <Route path="biddings" element={<Biddings posts={posts}/>} />
-                  <Route path="history" element={<h1>history</h1>} />
+                  <Route path="history" element={<TransactionHistory posts={posts}/>} />
                 </Route>
               </Routes>
           </div>
