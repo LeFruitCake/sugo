@@ -14,7 +14,7 @@ import Comment from "./Comments";
 import ChipComponent from "./Chip";
 
 //MUI
-import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, Modal, InputAdornment, Divider, AccordionSummary, Grid, Container} from "@mui/material";
+import {  Button, CircularProgress, TextField, Typography, Accordion, AccordionDetails, Chip, Skeleton, AvatarGroup, Modal, InputAdornment, Divider, AccordionSummary, Grid, Container, Box} from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FluorescentIcon from '@mui/icons-material/Fluorescent';
 import MuiAccordion from '@mui/material/Accordion';
@@ -32,6 +32,7 @@ import { useEffect } from "react";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import AppsOutageIcon from '@mui/icons-material/AppsOutage';
 
 export default function Posts(props){
     // const [posts,setPosts] = useState([])
@@ -108,7 +109,7 @@ export default function Posts(props){
                             </div>
 
                         </Grid>
-                        <Grid sx={{overflowY:'scroll',maxHeight:'88dvh',backgroundColor:'#f5f2f0',borderRadius:'5px',padding:'10px'}} className="gridExample" item md={9} xs={12}>
+                        <Grid sx={{overflowY:'auto',maxHeight:'88dvh',backgroundColor:'#f5f2f0',borderRadius:'5px',padding:'10px'}} className="gridExample" item md={9} xs={12}>
                             
                             <div id="feed-area-post-btns">
                                 <div id="filter-container">
@@ -140,7 +141,10 @@ export default function Posts(props){
                                     filteredCategory !== "All"?
                                     <>
                                         {filteredPosts.length === 0?
-                                            <h1>No listing</h1>
+                                            <Box sx={{height:'65dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+                                                <AppsOutageIcon sx={{fontSize:'100px', color:'silver'}}/>
+                                                <Typography sx={{color:'silver'}}>No Available Listing</Typography>
+                                            </Box>
                                             :
                                             filteredPosts.map((post,index)=>{
                                                 const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
@@ -152,15 +156,20 @@ export default function Posts(props){
                                     </>
                                     
                                     :props.posts?
-                                        props.posts.length > 0?
-                                                props.posts.filter((post)=>post.status === 'open').map((post,index)=>{
+                                        props.posts.filter((post)=>post.status==='open').length > 0?
+                                            props.posts.filter((post)=>post.status === 'open').map((post,index)=>{
                                                     const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
                                                     return(
                                                         <Post fetchComments={props.fetchComments} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />
                                                     )
                                                 }):
-                                            <><h1 style={{alignSelf:'center'}}>No Available Listing.</h1></>
-                                        :<>zero{console.log(props.posts)}</>
+                                            <>
+                                                <Box sx={{height:'65dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+                                                    <AppsOutageIcon sx={{fontSize:'100px', color:'silver'}}/>
+                                                    <Typography sx={{color:'silver'}}>No Available Listing</Typography>
+                                                </Box>
+                                            </>
+                                    :<>zero{console.log(props.posts)}</>
                                 }
                             </div>}
                         </Grid>

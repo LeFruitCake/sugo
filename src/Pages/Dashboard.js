@@ -35,7 +35,7 @@ const Dashboard = (props) => {
                         <NavLink id='nav-btn' to="history"><HistoryRoundedIcon sx={{fontSize:{xs:'30px',md:'40px'}}}/><Typography sx={{display:{xs:'none',md:'block'}}} variant="caption1" >History</Typography></NavLink>
                     </Box>
                     <Box sx={{display:'flex',alignItems:'center'}}>
-                        <Tooltip title="Notifications">
+                        {/* <Tooltip title="Notifications">
                             <Badge color="warning" badgeContent={1}>
                                 <IconButton size="medium" sx={{padding:'0px'}} ><DoorbellRoundedIcon fontSize="medium"/></IconButton>
                             </Badge>
@@ -44,7 +44,7 @@ const Dashboard = (props) => {
                             <Badge color="warning"  >
                                 <IconButton size="medium" sx={{padding:'0px'}} ><EmailOutlinedIcon fontSize="medium" /></IconButton>
                             </Badge>
-                        </Tooltip>
+                        </Tooltip> */}
                         <ProfileLogoDropdown logInfo={props.logInfo} />
                     </Box>
                 </Toolbar>
