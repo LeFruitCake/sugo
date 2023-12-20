@@ -383,7 +383,7 @@ function Post(props){
                             :<></>
                             }
                         </div>
-                        <div style={{width:'23%', display:'flex',justifyContent:'center'}}>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:isBidderResult?<Button onClick={()=>{setBidding(true);setBidAction("edit")}} sx={{alignSelf:'flex-end',backgroundColor:'darkorange',color:'white','&:hover':{backgroundColor:'rgb(190, 106, 3)'}}} variant="contained">Edit Bid</Button>:<Button onClick={()=>{setBidding(true);setBidAction("post")}} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
+                        <div style={{width:'30%', display:'flex',justifyContent:'center'}}>{auth?.currentUser?.uid === props.post.userID?<TripleDotOption action="Post" postID={props.post.id} reload={props.reload} setReload={props.setReload} setEditingPost={setEditingPost} />:isBidderResult?<Button onClick={()=>{setBidding(true);setBidAction("edit")}} sx={{alignSelf:'flex-end',backgroundColor:'darkorange',color:'white','&:hover':{backgroundColor:'rgb(190, 106, 3)'}}} variant="contained">Edit Bid</Button>:<Button onClick={()=>{setBidding(true);setBidAction("post")}} sx={{alignSelf:'flex-end',backgroundColor:'#164C45','&:hover':{backgroundColor:'#164C59'}}} variant="contained" >Bid</Button>}</div>
                         
                     </div>
                     <hr style={{color:'#CC8D1A'}}></hr>

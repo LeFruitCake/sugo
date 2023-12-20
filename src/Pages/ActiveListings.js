@@ -30,7 +30,7 @@ const ActiveListings = (props) => {
     return (
         <>  
             <Grid container padding={1.2}>
-                {posts.length > 0  ?
+                {posts.filter((post)=>post.status === 'open').length > 0 || posts.filter((post)=>post.status === 'ongoing').length > 0 ?
                     <Grid container>
                         <Grid item md={4} xs={12} >
                             <div id="ActiveListings-mappedListings-container">
@@ -89,7 +89,7 @@ const ActiveListings = (props) => {
                         </Grid>
                     </Grid>
                     :
-                    <Grid md={12}>
+                    <Grid item md={12}>
                         <Box sx={{height:'90dvh',display:'flex', justifyContent:'center', color:'silver',flexDirection:'column',alignItems:'center',gap:'50px'}}>
                                 <Box sx={{display:'flex', alignItems:'center'}}>
                                     <PlaylistRemoveIcon sx={{fontSize:'80px'}} />

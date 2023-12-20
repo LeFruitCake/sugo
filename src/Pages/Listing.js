@@ -31,61 +31,67 @@ const Listing = (props) => {
     
     
     useEffect(()=>{
-        setShowComments(true)
-        const fetchData = async ()=>{
-            try{
-                const data = await listings.filter((listing)=>listing.id === param.id)
-                setDisplayListing(data)
-                console.log("gone here")
-            }catch(error){
-                console.log(error)
-            }finally{
-                setLoading(false)
-            }
-        }
-        const fetchBids = async ()=>{
-            setBids([])
-            setLoadingBids(true)
-            try{
-                const id = await listings.filter((listing)=>listing.id===param.id)
-                if(id.length>0){
-                    const data = await getDocs(
-                        query(collection(db,"Bids"),where("postID","==",id[0].id))
-                    )
-                    console.log(data.size)
-                    if(data.size > 0){
-                        const filteredData = data.docs.map((doc) => ({
-                            ...doc.data(),
-                            id:doc.id,
-                        }));
-                        const sortedData = filteredData.sort((a, b) => a.amount - b.amount);
-    
-                        console.log(sortedData);
-                        setBids(sortedData);
-                    } 
+        const idExists = props.posts.filter((post)=>post.id === location.pathname.split('/').pop())
+        console.log(idExists)
+        if(idExists.length === 0){
+            navigate('*')
+        }else{
+            setShowComments(true)
+            const fetchData = async ()=>{
+                try{
+                    const data = await listings.filter((listing)=>listing.id === param.id)
+                    setDisplayListing(data)
+                    console.log("gone here")
+                }catch(error){
+                    console.log(error)
+                }finally{
+                    setLoading(false)
                 }
-            }catch(error){
-                console.log(error)
-            }finally{
-                setLoadingBids(false)
             }
-        }
-        const fetchComments = async ()=>{
-            setLoadingComments(true)
-            try{
-                const data = await comments.filter((comment)=>comment.postID === param.id)
-                setFilteredComments(data)
-            }catch(error){
-                console.log(error)
-            }finally{
-                setLoadingComments(false)
+            const fetchBids = async ()=>{
+                setBids([])
+                setLoadingBids(true)
+                try{
+                    const id = await listings.filter((listing)=>listing.id===param.id)
+                    if(id.length>0){
+                        const data = await getDocs(
+                            query(collection(db,"Bids"),where("postID","==",id[0].id))
+                        )
+                        console.log(data.size)
+                        if(data.size > 0){
+                            const filteredData = data.docs.map((doc) => ({
+                                ...doc.data(),
+                                id:doc.id,
+                            }));
+                            const sortedData = filteredData.sort((a, b) => a.amount - b.amount);
+        
+                            console.log(sortedData);
+                            setBids(sortedData);
+                        } 
+                    }
+                }catch(error){
+                    console.log(error)
+                }finally{
+                    setLoadingBids(false)
+                }
             }
+            const fetchComments = async ()=>{
+                setLoadingComments(true)
+                try{
+                    const data = await comments.filter((comment)=>comment.postID === param.id)
+                    setFilteredComments(data)
+                }catch(error){
+                    console.log(error)
+                }finally{
+                    setLoadingComments(false)
+                }
+            }
+            navigate(location.pathname)
+            fetchData()
+            fetchComments()
+            fetchBids()
         }
-        navigate(location.pathname)
-        fetchData()
-        fetchComments()
-        fetchBids()
-    },[reload,comments,listings,location.pathname,navigate,param.id])
+    },[reload,comments,listings,location.pathname,navigate,param.id, props.posts])
 
     const completeTransaction = async(id)=>{
         try{
@@ -106,7 +112,7 @@ const Listing = (props) => {
 
     return (
         <div id='Listing-container'>
-            {loading && <p>Loading...</p>}
+            {/* {loading && <p>Loading...</p>} */}
             {displayListing && displayListing.length > 0 && (
                 <>
                     {displayListing[0].status === 'open'?

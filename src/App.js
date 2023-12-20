@@ -15,6 +15,8 @@ import ActiveListings from "./Pages/ActiveListings";
 import Listing from "./Pages/Listing";
 import Biddings from "./Pages/Biddings";
 import TransactionHistory from "./Pages/TransactionHistory";
+import PageNotFound from "./Pages/PageNotFound";
+import ListingNotFound from "./Pages/ListingNotFound";
 function App() {
   const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('logStatus')));
   const [posts,setPosts] = useState([]);
@@ -84,10 +86,12 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard logInfo={setLogged} setFetchingData={setFetchingData} fetchingData={fetchingData} reload={reload} setReload={setReload} fetchComments={fetchComments} comments={comments} posts={posts} />} >
                   <Route path="listings" element={<ActiveListings getComments={fetchComments} posts={posts} comments={comments} reload={reload} setReload={setReload} />}>
-                    <Route path=":id" element={<Listing reload = {reload} setReload={setReload}/>} />
+                    <Route path=":id" element={<Listing posts={posts} reload = {reload} setReload={setReload}/>} />
+                    {/* <Route path='*' element={<ListingNotFound/>}/> */}
                   </Route>
                   <Route path="biddings" element={<Biddings posts={posts}/>} />
                   <Route path="history" element={<TransactionHistory posts={posts}/>} />
+                  <Route path="*" element={<PageNotFound/>}/>
                 </Route>
               </Routes>
           </div>
