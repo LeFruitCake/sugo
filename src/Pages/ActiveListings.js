@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Modal, Stack, Typography } from '@mui/material';
 // import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 // import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation} from 'react-router-dom';
@@ -8,97 +8,78 @@ import ChipComponent from '../Components/Chip';
 import { useEffect, useState } from 'react';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PostRequest from '../Components/PostRequest';
-
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 
 const ActiveListings = (props) => { 
-    const [activePosts,setActivePosts] = useState([])
-    const [ongoingPosts,setOngoingPosts] = useState([])
+    const [posts,setPosts] = useState([])
+    // const [ongoingPosts,setOngoingPosts] = useState([])
     const [posting,setPosting] = useState(false)
     const location = useLocation()
     useEffect(()=>{
-        const data = props.posts.filter((post)=>post.userID === localStorage.getItem('uid') && post.status === 'open')
-        const ongoingdata = props.posts.filter((post)=>post.userID === localStorage.getItem('uid') && post.status === 'ongoing')
+        const data = props.posts.filter((post)=>post.userID === localStorage.getItem('uid'))
+        // const ongoingdata = props.posts.filter((post)=>post.userID === localStorage.getItem('uid') && post.status === 'ongoing')
         if(data.length > 0){
-            setActivePosts(data)
-            console.log(data)
+            setPosts(data)
         }
-        if(ongoingdata.length > 0){
-            setOngoingPosts(ongoingdata)
-        }
-        console.log("check")
-    },[props.posts])
+        // if(ongoingdata.length > 0){
+        //     setOngoingPosts(ongoingdata)
+        // }
+    },[props.reload,props.posts])
     return (
         <>  
-            {console.log(ongoingPosts.length)}
-            {activePosts.length > 0 || ongoingPosts.length > 0 ?
+            {posts.length > 0 && posts ?
                 <div id='ActiveListings-app-container'>
                     <div id='ActiveListings-left'>
                         <div style={{display:'flex',flexDirection:'column'}}>
                             <div id="ActiveListings-mappedListings-container">
-                                {
-                                    activePosts.length>0?
-                                        <>
-                                            <Typography variant='subtitle1' fontWeight='bold' color='silver'>Active Listings</Typography>
-                                                {
-                                                    activePosts.map((post)=>(
-                                                        <NavLink key={activePosts.id} to={post.id} >
-                                                            <div  id='ActiveListings-mappedListings'>
-                                                                <Stack direction='column' gap={1}>
-                                                                    <Typography variant='subtitle1'>{post.title}</Typography>
-                                                                    <Stack direction="row" spacing={1}>
-                                                                        <ChipComponent category={post.category} ></ChipComponent>
-                                                                    </Stack>
-                                                                </Stack>
-                                                            </div>
-                                                        </NavLink>
-                                                    ))
-                                                }
-
-                                        </>
-                                    
-                                    :
-                                       <></>
-                                }
-                                {
-                                    ongoingPosts?
+                                
                                     <>
-                                            <Typography variant='subtitle1' fontWeight='bold' color='silver'>Ongoing</Typography>
-                                                {
-                                                    ongoingPosts.map((post)=>(
-                                                        <NavLink key={activePosts.id} to={post.id} >
-                                                            <div  id='ActiveListings-mappedListings'>
-                                                                <Stack direction='column' gap={1}>
-                                                                    <Typography variant='subtitle1'>{post.title}</Typography>
-                                                                    <Stack direction="row" spacing={1}>
-                                                                        <ChipComponent category={post.category} ></ChipComponent>
-                                                                    </Stack>
-                                                                </Stack>
-                                                            </div>
-                                                        </NavLink>
-                                                    ))
-                                                }
-
-                                        </>
-                                    
-                                    :
-                                        <div style={{display:'flex',flexDirection:'column', gap:'5px', justifyContent:'center', alignItems:'center', width:'100%'}}>
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                            <Skeleton variant='rounded' width={500} height={80} />
-                                        </div>
-                                }
+                                        <Typography variant='subtitle1' fontWeight='bold' color='silver'>Active</Typography>
+                                        {
+                                            posts.filter((post)=>post.status==='open').map((post)=>(
+                                                <NavLink key={post.id} to={post.id} >
+                                                    <div  id='ActiveListings-mappedListings'>
+                                                        <Stack direction='column' gap={1}>
+                                                            <Typography variant='subtitle1'>{post.title}</Typography>
+                                                            <Stack direction="row" spacing={1}>
+                                                                <ChipComponent category={post.category} ></ChipComponent>
+                                                            </Stack>
+                                                        </Stack>
+                                                    </div>
+                                                </NavLink>
+                                            ))
+                                        }
+                                        <Divider/>
+                                    </>
+                                    <>
+                                        <Typography variant='subtitle1' fontWeight='bold' color='silver'>Ongoing</Typography>
+                                        {
+                                            posts.filter((post)=>post.status==='ongoing').map((post)=>(
+                                                <NavLink key={post.id} to={post.id} >
+                                                    <div  id='ActiveListings-mappedListings'>
+                                                        <Stack direction='column' gap={1}>
+                                                            <Typography variant='subtitle1'>{post.title}</Typography>
+                                                            <Stack direction="row" spacing={1}>
+                                                                <ChipComponent category={post.category} ></ChipComponent>
+                                                            </Stack>
+                                                        </Stack>
+                                                    </div>
+                                                </NavLink>
+                                            ))
+                                        }
+                                    </>
                             </div>
                         </div>
                     </div>
                     <div id='ActiveListings-right'>
                         {location.pathname === '/listings'?
-                            <>
-                                Meh
-                            </>:
+                            <Box sx={{display:'flex',height:'88dvh',justifyContent:'center',alignItems:'center',flexDirection:'column',color:'silver'}}>
+                                <PanToolAltIcon sx={{fontSize:'80px'}} />
+                                <Box sx={{display:'flex'}}>
+                                    <ArrowLeftIcon /><Typography>Click one of your listing to display here.</Typography>
+                                </Box>
+                            </Box>:
                             <>
                                 <Outlet context={[props.posts, props.comments,props.reload,props.setReload,props.getComments]}/>
                             </>

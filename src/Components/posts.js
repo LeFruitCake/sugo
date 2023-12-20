@@ -108,7 +108,7 @@ export default function Posts(props){
                             </div>
 
                         </Grid>
-                        <Grid sx={{overflowY:'scroll',maxHeight:'90dvh',backgroundColor:'#f5f2f0',borderRadius:'5px',padding:'10px'}} className="gridExample" item md={9} xs={12}>
+                        <Grid sx={{overflowY:'scroll',maxHeight:'88dvh',backgroundColor:'#f5f2f0',borderRadius:'5px',padding:'10px'}} className="gridExample" item md={9} xs={12}>
                             
                             <div id="feed-area-post-btns">
                                 <div id="filter-container">
@@ -153,7 +153,7 @@ export default function Posts(props){
                                     
                                     :props.posts?
                                         props.posts.length > 0?
-                                                props.posts.map((post,index)=>{
+                                                props.posts.filter((post)=>post.status === 'open').map((post,index)=>{
                                                     const mappedComments = props.comments.filter((comment)=>comment.postID === post.id);
                                                     return(
                                                         <Post fetchComments={props.fetchComments} comment={mappedComments} key={index} post={post} reload={props.reload} setReload={props.setReload} date={new Date(post.postDate.seconds * 1000 + post.postDate.nanoseconds / 1000000).toLocaleDateString()} />

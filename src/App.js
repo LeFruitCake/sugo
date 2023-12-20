@@ -24,7 +24,7 @@ function App() {
     setFetchingData(true)
     try {
         const data = await getDocs(
-          query(collection(db, "Posts"), orderBy("postDate", "desc"))
+          query(collection(db, "Posts"),orderBy("postDate", "desc"))
         );
         const filteredData = data.docs.map((doc) => ({
           ...doc.data(),
@@ -32,6 +32,7 @@ function App() {
         }));
         setPosts(filteredData);
         setFetchingData(false)
+        // console.log(filteredData)
       } catch (err) {
         console.error(err);
       }

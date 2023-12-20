@@ -15,6 +15,10 @@ const Bids = (props) => {
             setLoading(true)
             await updateDoc(doc(db,"Posts",props.postID),{
                 status:'ongoing',
+                employeeID:props.bid.id,
+                employeeName:props.bid.displayName,
+                employeePhotoURL:props.bid.photoURL,
+                amount:props.bid.amount,
             }).then(()=>{
                 setConfirmEmploy(false)
                 setLoading(false)

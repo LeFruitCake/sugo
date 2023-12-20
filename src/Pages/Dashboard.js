@@ -22,7 +22,7 @@ const Dashboard = (props) => {
     const location = useLocation()
     return (
         <>
-            <AppBar disableGutters position="static" sx={{display:'flex',alignItems:'flex-end',backgroundColor:'white'}}>
+            <AppBar position="static" sx={{display:'flex',alignItems:'flex-end',backgroundColor:'white'}}>
                 <Toolbar sx={{width:'100%',display:'flex',justifyContent:'space-around',color:'black'}} disableGutters>
                     <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', width:'20%'}}>
                         <Typography variant="h4" component="span" sx={{fontSize:{xs:'20px',md:'35px', color:'midnightblue'}}} >Sugo</Typography>
