@@ -7,9 +7,7 @@ import ProfileLogoDropdown from "../Components/ProfileLogoDropdown";
 import Posts from "../Components/posts";
 
 //MUI
-import { AppBar, Badge, Box, IconButton, Toolbar, Tooltip, Typography} from "@mui/material";
-import DoorbellRoundedIcon from '@mui/icons-material/DoorbellRounded';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import { AppBar, Box, Toolbar, Typography} from "@mui/material";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import FactCheckRoundedIcon from '@mui/icons-material/FactCheckRounded';
 import PaidRoundedIcon from '@mui/icons-material/PaidRounded';

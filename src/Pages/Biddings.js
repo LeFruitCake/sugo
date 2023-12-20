@@ -97,15 +97,14 @@ function Bid(props){
     return(
         <div id='bid-container'>
             <div style={{display:'flex',flexDirection:'column'}}>
-                <span><span style={{fontWeight:'bold'}}>Re:</span> {props.bid.title}</span>
+                <span style={{fontSize:'20px'}}><span style={{fontWeight:'bold'}}>Re:</span> {props.bid.title}</span>
                 <span style={{display:'flex'}}>
-                    {/* <span>{props.bid.photoURL?<img style={{width:'30px', borderRadius:'50%'}} src={props.bid.photoURL}/>:<BackgroundLetterAvatars name={props.bid.displayName} size={30}/>}</span> */}
-                    <span><span style={{fontSize:'12px'}}>Posted by:</span> <span style={{fontWeight:'bold',fontSize:'15px'}}>{props.bid.displayName}</span></span>
+                <span style={{fontSize:'20px'}}><span style={{fontWeight:'bold'}}>Posted by:</span> <span>{props.bid.displayName}</span></span>
                 </span>
             </div>
             <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end'}}>
-                <span>Price <span>{props.bid.postAmount}</span></span>
-                <span>Bid <span>{props.bid.bidAmount}</span></span>
+                <span><span style={{fontWeight:'bold',fontSize:'20px'}}>Price:</span> <span style={{fontSize:'20px'}}> {props.bid.postAmount}</span></span>
+                <span><span style={{fontWeight:'bold',fontSize:'20px'}}>Bid Amount:</span> <span style={{fontSize:'20px'}}>{props.bid.bidAmount}</span></span>
             </div>
         </div>
     )
