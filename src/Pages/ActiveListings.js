@@ -37,6 +37,7 @@ const ActiveListings = (props) => {
     return (
         <>  
             {validPage?
+                posts?
                 <Grid container padding={1.2}>
                 {posts.filter((post)=>post.status === 'open').length > 0 || posts.filter((post)=>post.status === 'ongoing').length > 0 ?
                     <Grid container>
@@ -114,7 +115,9 @@ const ActiveListings = (props) => {
                     </Grid>  
                 }
             </Grid>:
-            <ListingNotFound/>
+                <>Loading</>
+                    :
+                <ListingNotFound/>
             }
             
         </>

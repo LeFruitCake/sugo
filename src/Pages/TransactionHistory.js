@@ -4,16 +4,29 @@ import TimerOffIcon from '@mui/icons-material/TimerOff';
 import { useNavigate } from 'react-router-dom';
 
 const TransactionHistory = (props) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const userDisplayName = localStorage.getItem('displayName');
+
+    const filteredByDisplayName = props.posts.filter((post) => (
+        post.status === 'completed' && post.displayName === userDisplayName
+    ));
+
+    const filteredByEmployeeName = props.posts.filter((post) => (
+        post.status === 'completed' && post.employeeName === userDisplayName
+    ));
+
+    const filteredPosts = [...filteredByDisplayName, ...filteredByEmployeeName];
+
     return (
-        <>
+        <>{console.log(filteredPosts)}
             {
-            props.posts.filter((post)=>post.status==='completed').length > 0?
+            filteredPosts.length > 0?
                 <Box sx={{display:'flex',alignItems:'center',justifyContent:'center', paddingTop:'20px',maxHeight:'85dvh'}}>
                     <table border='solid 1px black' >
-                        <tbody style={{padding:'10px'}}>
+                        <tbody >
                             <tr>
                                 <th>Post ID</th>
+                                <th>Posted By</th>
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Employee</th>
@@ -21,9 +34,10 @@ const TransactionHistory = (props) => {
                                 <th>Transaction Amount</th>
                                 <th>Completion Date</th>
                             </tr>
-                            {props.posts.filter((post)=>post.status==='completed').map((post,index)=>(
-                                <tr align='center' style={{padding:'10px'}}>
+                            {filteredPosts.map((post,index)=>(
+                                <tr align='center' >
                                     <td>{post.id}</td>
+                                    <td>{post.displayName}</td>
                                     <td>{post.title}</td>
                                     <td>{post.category}</td>
                                     <td>{post.employeeName}</td>
