@@ -2,6 +2,8 @@ import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
 import TimerOffIcon from '@mui/icons-material/TimerOff';
 import { useNavigate } from 'react-router-dom';
+import '../CSS/TransactionHistory.css'
+
 
 const TransactionHistory = (props) => {
     const navigate = useNavigate();
@@ -22,9 +24,8 @@ const TransactionHistory = (props) => {
             {
             filteredPosts.length > 0?
                 <Box sx={{display:'flex',alignItems:'center',justifyContent:'center', paddingTop:'20px',maxHeight:'85dvh'}}>
-                    <table border='solid 1px black' >
-                        <tbody >
-                            <tr>
+                    <table>
+                        <tr id='fields'>
                                 <th>Post ID</th>
                                 <th>Posted By</th>
                                 <th>Title</th>
@@ -33,7 +34,9 @@ const TransactionHistory = (props) => {
                                 <th>Employee ID</th>
                                 <th>Transaction Amount</th>
                                 <th>Completion Date</th>
-                            </tr>
+                        </tr>
+                        <tbody >
+                            
                             {filteredPosts.map((post,index)=>(
                                 <tr align='center' >
                                     <td>{post.id}</td>

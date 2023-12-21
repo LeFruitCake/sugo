@@ -1,0 +1,20 @@
+table{
+    border-spacing: 20px;
+    /* gap: 20px; */
+    border-bottom: solid 1px green;
+}
+th{
+    padding: 10px;
+    border-bottom: solid 1px black;
+}
+
+tbody td:hover{
+    background-color: goldenrod;
+    /* border-radius: 20px; */
+}
+
+#fields{
+    background-color: gold;
+}
+
+
