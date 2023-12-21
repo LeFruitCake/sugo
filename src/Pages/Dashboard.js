@@ -1,10 +1,9 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import '../CSS/dashboard.css'
 
 
 //Components
 import ProfileLogoDropdown from "../Components/ProfileLogoDropdown";
-import Posts from "../Components/posts";
 
 //MUI
 import { AppBar, Box, Toolbar, Typography} from "@mui/material";
@@ -16,8 +15,6 @@ import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 
 
 const Dashboard = (props) => {
-    // const [notifCount, setNotifCount] = useState(0)
-    const location = useLocation()
     return (
         <>
             <AppBar position="static" sx={{display:'flex',alignItems:'flex-end',backgroundColor:'white'}}>
@@ -48,7 +45,7 @@ const Dashboard = (props) => {
                 </Toolbar>
             </AppBar>
             <div>
-            {location.pathname==="/"?<Posts setFetchingData={props.setFetchingData} fetchingData={props.fetchingData} reload={props.reload} setReload={props.setReload} comments={props.comments} posts={props.posts} fetchComments={props.fetchComments}/>:<></>}
+            {/* {location.pathname==="/"?<Posts setFetchingData={props.setFetchingData} fetchingData={props.fetchingData} reload={props.reload} setReload={props.setReload} comments={props.comments} posts={props.posts} fetchComments={props.fetchComments}/>:<></>} */}
             <Outlet/>
             </div>
         </>
