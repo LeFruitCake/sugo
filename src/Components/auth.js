@@ -30,7 +30,14 @@ export const Auth = (props) =>{
                 localStorage.setItem('uid',response.user.uid)
                 navigate('/')
         }).catch((error)=>{
-                setMessage("Invalid email/password.")
+            // if(error.message )
+            // console.log(error.code)
+            // if(error.code === 'auth/network')
+                if(error.code === 'auth/invalid-credential'){
+                    setMessage('Invalid email or password')
+                }else{
+                    setMessage(error.code)
+                }
                 setLoading(false)
             })
         }

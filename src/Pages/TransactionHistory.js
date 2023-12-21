@@ -42,7 +42,7 @@ const TransactionHistory = (props) => {
                                     <td>{post.id}</td>
                                     <td>{post.displayName}</td>
                                     <td>{post.title}</td>
-                                    <td>{post.category}</td>
+                                    <td>{post.category === ''?'Uncategorized':post.category}</td>
                                     <td>{post.employeeName}</td>
                                     <td>{post.employeeID}</td>
                                     <td>{post.amount}</td>
